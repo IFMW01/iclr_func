@@ -106,9 +106,12 @@ To ensure that there are no namespace conflicts, you must save your asset to you
 Please avoid using the direct markdown method of embedding images; they may not be properly resized.
 Some more complex ways to load images (note the different styles of the shapes/shadows):
 
+
+
+
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2025-05-07-distill-example/9.jpg" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/2025-05-07-distill-example/different_init_same_order_act.png" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.html path="assets/img/2025-05-07-distill-example/7.jpg" class="img-fluid rounded z-depth-1" %}
@@ -177,9 +180,27 @@ And then include it with the following:
 ```
 
 Voila!
-
+#### Test Error 2D
 <div class="l-page">
-  <iframe src="{{ 'assets/html/2025-05-07-distill-example/plotly_demo_1.html' | relative_url }}" frameborder='0' scrolling='no' height="600px" width="100%"></iframe>
+  <iframe src="{{ 'assets/html/2025-05-07-distill-example/test_error_landscapes.html' | relative_url }}" frameborder='0' scrolling='no' height="600px" width="100%"></iframe>
+</div>
+
+#### Test Error 3D
+<div class="l-page">
+  <iframe src="{{ 'assets/html/2025-05-07-distill-example/3d_test_error_landscapes.html' | relative_url }}" frameborder='0' scrolling='no' height="600px" width="100%"></iframe>
+</div>
+
+
+#### Test Loss 2D
+sdadsa
+<div class="l-page">
+  <iframe src="{{ 'assets/html/2025-05-07-distill-example/test_loss_landscapes.html' | relative_url }}" frameborder='0' scrolling='no' height="600px" width="100%"></iframe>
+</div>
+
+#### Test Loss 3D
+sdadsa
+<div class="l-page">
+  <iframe src="{{ 'assets/html/2025-05-07-distill-example/3d_test_loss_landscapes.html' | relative_url }}" frameborder='0' scrolling='no' height="600px" width="100%"></iframe>
 </div>
 
 ## Citations
