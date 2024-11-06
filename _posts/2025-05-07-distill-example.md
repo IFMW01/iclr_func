@@ -1,8 +1,7 @@
 ---
 layout: distill
 title: The Functional Perspective of Deep Learning
-description: YAYAYAY OOp
-  Do not include math/latex or hyperlinks.
+description: Common wisdom suggests that neural networks trained on the same dataset reaching the same accuracy and loss can be considered equivalent. However, when considering neural networks as functional representations of their inputs space it becomes clear that neural networks all represent distinct functions that enable the model to have predictive capacity. In this blog post we revist functional perspectives which have been used to understand the sucess of neural network ebsembles on more modern architetcures and dive deeping to exiting functional similarity metrics that exist to asses the diversity of neural network functions, showing the pitfalls of just accuracy and loss based perspectives when considering neural network function. 
 date: 2025-05-07
 future: true
 htmlwidgets: true
@@ -34,7 +33,7 @@ bibliography: 2025-05-07-distill-example.bib
 #     for hyperlinks within the post to work correctly. 
 #   - please use this format rather than manually creating a markdown table of contents.
 toc:
-  - name: Equations
+  - name: Why the functional perspective
   - name: Images and Figures
     subsections:
     - name: Interactive Figures
@@ -68,9 +67,11 @@ _styles: >
 
 Note: please use the table of contents as defined in the front matter rather than the traditional markdown styling.
 
-## Equations
+## Why the functional perspective
 
-This theme supports rendering beautiful math in inline and display modes using [MathJax 3](https://www.mathjax.org/) engine.
+Exploring neural networks from the functional perspective 
+
+<!-- This theme supports rendering beautiful math in inline and display modes using [MathJax 3](https://www.mathjax.org/) engine.
 You just need to surround your math expression with `$$`, like `$$ E = mc^2 $$`.
 If you leave it inside a paragraph, it will produce an inline expression, just like $$ E = mc^2 $$.
 
@@ -83,7 +84,7 @@ $$
 
 Note that MathJax 3 is [a major re-write of MathJax](https://docs.mathjax.org/en/latest/upgrading/whats-new-3.0.html) 
 that brought a significant improvement to the loading and rendering speed, which is now 
-[on par with KaTeX](http://www.intmath.com/cg5/katex-mathjax-comparison.php).
+[on par with KaTeX](http://www.intmath.com/cg5/katex-mathjax-comparison.php). -->
 
 
 ## Images and Figures
