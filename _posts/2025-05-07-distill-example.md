@@ -1,16 +1,15 @@
 ---
 layout: distill
-title: The Functional Perspective of Deep Learning
-description: Common wisdom suggests that neural networks trained on the same dataset reaching the same accuracy and loss can be considered equivalent. However, when considering neural networks as functional representations of their inputs space it becomes clear that neural networks all represent distinct functions that enable the model to have predictive capacity. In this blog post we revist functional perspectives which have been used to understand the sucess of neural network ebsembles on more modern architetcures and dive deeping to exiting functional similarity metrics that exist to asses the diversity of neural network functions, showing the pitfalls of just accuracy and loss based perspectives when considering neural network function. 
+title: The Functional Perspective of Neural Networks
+description: Common wisdom suggests that neural networks trained on the same dataset reaching the same accuracy and loss can be considered equivalent. However, when considering neural networks as functional representations of their input space, it becomes clear that neural networks all represent distinct functions that enable the model to have predictive capacity. In this blog post, we review functional perspectives which have been used to understand the success of neural network ensembles on more modern architectures concurrently with a dive deep into existing functional similarity metrics that assess the diversity of neural network functions, showing the pitfalls of just accuracy and loss based perspectives when considering neural network function. 
 date: 2025-05-07
 future: true
 htmlwidgets: true
 hidden: false
-
-# Anonymize when submitting
 authors:
   - name: Anonymous
 
+# Anonymize when submitting
 # authors:
 #   - name: Albert Einstein
 #     url: "https://en.wikipedia.org/wiki/Albert_Einstein"
@@ -35,20 +34,34 @@ bibliography: 2025-05-07-distill-example.bib
 toc:
   - name: Why the functional perspective
     subsections:
-    - name: Popular methods for functional analysis
-  - name: TDODO
-  - name: Citations
-  - name: Footnotes
-  - name: Code Blocks
-  - name: Diagrams
-  - name: Tweets
-  - name: Layouts
-  - name: Other Typography?
+    - name: How can functions differ
+  - name: Qualitative Functional Analysis
+    subsections:
+      - name: Test Error Analysis
+      - name: Loss Analysis
+      - name: Functional Similarity Visualisations
+      - name: Prediction Analysis
+      - name: Summary of Qualitative Functional Analysis
+  - name: Quantative Functional Analysis
+    subsections:
+      - name: Activation Distance
+      - name: Cosine Similairty
+      - name: JS divergence 
+      - name: Summary of Quantative Functional Analysis
+  - name: Impact of Functional Network Analysis
+  # - name: Conclusions
+  # - name: Citations
+  # - name: Footnotes
+  # - name: Code Blocks
+  # - name: Diagrams
+  # - name: Tweets
+  # - name: Layouts
+  # - name: Other Typography?
 
   #   - name: Why the functional perspective
   #   subsections: Re-producing Fort el al.,
-  #    - name: Accuracy  Landscape
-  #     - name: Loss Landscape
+  #    - name: Test Error Analysis
+  #     - name: Loss Analysis
   #     - name: TSNE PLots
   #     - name: Prediction Disimilairy
   # # - name: Updated work
@@ -67,6 +80,7 @@ _styles: >
     border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 0px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 12px;
+    
   }
   .fake-img p {
     font-family: monospace;
@@ -78,13 +92,13 @@ _styles: >
   }
 ---
 
-Note: please use the table of contents as defined in the front matter rather than the traditional markdown styling.
+<!-- Note: please use the table of contents as defined in the front matter rather than the traditional markdown styling. -->
 
 ## Why the functional perspective
 
-The gensis of regarding neural networks as function machines is owed to the original ensemble paper by BLAH et al,. that shows how shallow MLP networks employ different functions to enable improved performance. The functional perspective for deep neural networks mainly derrives from a study conducted by Fort et al,. that explores the properties of ensembled neural networks and via functional compariisons over just traditional loss and accuracy analysis. Their work answers important questions regarding the efficacy of ensembled network performance. 
+The gensis of regarding neural networks as function machines is owed to the original analysis of ensembling overfit neural networks in the 1990's as a way to reduce the residual generalisation error for two-hidden layer networks performing classification tasks, inspired by notions of fault tolerant computing, wherein a noisy rule is formed by combining many local minima using a collective decision strategy making the resulting output less fallible than any single network<d-cite key="hansen1990neural"></d-cite>; showsing how shallow MLP networks employ different functions to enable improved performance. Fort et al,. popularised this understanding for deep neural networks where they eplored the properties of ensembled neural networks and via prediction compariisons over just traditional loss and accuracy analysis<d-cite key="fort2019deep"></d-cite>; the work echos the understanding of "noisy" function combination to answer important questions regarding the efficacy of ensembled network performance. 
 
-Understanding that neural networks form different functions over their input space is a critial idea that has numerous safety implications. In this blog post we reproduce existing functional analysis conducted by fort et al., on contemporary vision transformers and also introduce and present results for the best attempts within literature to capture function of neural netwokrs that have arrived since the existing work by fort el,. We then close the blog and outline the importance of this perspective over just pursing loss and accuracy based analysis in addition to addressing its wider role in how we consider interpretability and model safety in the future. 
+Understanding that neural networks form different functions over their input space is a critial idea that has numerous safety implications. In this blog post we reproduce existing functional analysis conducted by fort et al., on contemporary vision transformers, providing accuracy, loss, prediction disagreemnt and visual analysis of networks trained on the dataset and then further the work by introducing the results for the best attempts of contemporary literature to capture function of neural networks<d-cite key="klabunde2023similarity"></d-cite>. We provide a commentary on the pitfalls of traditional analysis of accuracy, loss and visual representations of network functions and outline the importance of culminating such analysis with more quantative methods; closing with a perspective on the wider role functional analysis can have on neural network interpretability and safety in the future. 
 
 <!-- This theme supports rendering beautiful math in inline and display modes using [MathJax 3](https://www.mathjax.org/) engine.
 You just need to surround your math expression with `$$`, like `$$ E = mc^2 $$`.
@@ -101,17 +115,11 @@ Note that MathJax 3 is [a major re-write of MathJax](https://docs.mathjax.org/en
 that brought a significant improvement to the loading and rendering speed, which is now 
 [on par with KaTeX](http://www.intmath.com/cg5/katex-mathjax-comparison.php). -->
 
-### Popular methods for functional analysis
-
-## How can functions differ and what does this mean
+### How Neural Network Functions Differ
 
 Neural networks that train on the same data can be considered as functional representation of its input space. As a result models that train on the same data can vary considerably on inputs which leads to different overall behaviour. For exmaple in the figure below we can see two hypothetical models that are trained on the the ten class image classifcation task of CIFAR10. It is evident for these models that on the input image of a cat both models predict that the inout image is a cat - additionally it can be noted that both models have the same loss value of 1.139.Considering these two metrics alone could lead to the misconception that these models are functionally equivalent given the absolute similairty of their loss and accuracy. However, when considering the output probailities which represent the output of the function for each model it is evident that the function the neural networks represent is varied. 
 
 For model one the 4 highest prediction probabilities other than the predicted class of cat (0.32) are that of the automobile (0.20), airplane (0.12), ship (0.10) and dog (0.10) - as a result from this output perspective it could be argued that the models function puts this example closer to various vehicles over other animals. On the otherhand for modle two the 4 highest prediction probabilities other than the predicted class of cat (0.32) are that of the dog (0.20), deer (0.12), bird (0.10) and frog (0.10) - this models function puts the input image of a cat closer to other species of animals. 
-
-When considering the functions of the two modles if we were to use them in deployment - despite the accuracy and the loss being equivalent, it would be reasonable to use model two for these types of inputs as it has a function that better captures the distinction between animals and vehicles which is an important distinction. While this is a contrived exmaple it is not infeasible that such functions could arise in practice which is why model evaluation should be expanded from loss and accuracy to include functional perspectives.
-
-
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.html path="assets/pdf/Model_One.pdf" class="img-fluid rounded z-depth-1" %}
@@ -121,399 +129,180 @@ When considering the functions of the two modles if we were to use them in deplo
     </div>
 </div>
 <div class="caption">
-    An example of two hypothetical models trained on CIFAR10 that have equivalent prediction agreement, accuracy and loss on the input space while concurrently having equivalent overall functions.
+    An example of two hypothetical models trained on CIFAR10 that have equivalent prediction agreement, accuracy and loss on the input space while concurrently having nonequivalent functions.
 </div>
+When considering the functions of the two modles if we were to use them in deployment - despite the accuracy and the loss being equivalent, it would be reasonable to use model two for these types of inputs as it has a function that better captures the distinction between animals and vehicles which is an important distinction. While this is a contrived exmaple it is not infeasible that such functions could arise in practice which is why model evaluation should be expanded from loss and accuracy to include quantative functional perspectives.
 
-<!-- {% include figure.html path="assets/pdf/Model_One.pdf" class="img-fluid" %}
 
-{% include figure.html path="assets/pdf/Model_Two.pdf" class="img-fluid" %} -->
-
-To ensure that there are no namespace conflicts, you must save your asset to your unique directory
+<!-- To ensure that there are no namespace conflicts, you must save your asset to your unique directory
 `/assets/img/2025-05-07-[SUBMISSION NAME]` within your submission.
 
 Please avoid using the direct markdown method of embedding images; they may not be properly resized.
-Some more complex ways to load images (note the different styles of the shapes/shadows):
+Some more complex ways to load images (note the different styles of the shapes/shadows): -->
+
+## Qualitative Functional Analysis
+
+Typically, neural network similarity is considered from an accuracy and loss perspective. In our previous section, we have provided contrived examples of when this approach could be flawed. In this section, we look at more qualitative methods of analysing functional relations of neural networks trained under different conditions on CIFAR10<d-cite key="krizhevsky2009learning"></d-cite> as done by Fort et al,.<d-cite key="fort2019deep"></d-cite> for accuracy, loss and prediction disimialirty. To make the experiments results relevant to contempapry architectures all of the models used for the figures are Vision Transformers<d-cite key="dosovitskiy2020image"></d-cite>. All models have the same training hyperparameters with only two variables (initailisation and training data order) altered. The three conditions are as follows - a base model (**Base**) which is trained on a decided seed, a model which has the *same initialisation as the base model but is trained on a different data order* (**SIDDO**) and a model which has a *different initialisation but is trained with the same data order as the base model* (**DISDO**). Through these three conditions, we show how qualitative methods of analysing the differences between these methods may be misleading. We also present functions plots using TSNE<d-cite key="van2008visualizing"></d-cite>, as done by <d-cite key="fort2019deep"></d-cite> , while inclduing other unexplored visualisation methods.
 
 
-## Activation Distance
+### Test Error Analysis
 
-Activation distance represents the l1 distance of neural network outputs - from this distance metrics can be understood between netwokrs on inputs spaces. When we compare the activation distance of neural networks trained in different conditions it can be observed that smple factors can impact the functional similairty of outputted networks. In this instance the case of models with the same initialisation but trained with different data orders are actually less functionally similliar than models that start at different initilisations but are trained in the same data order. As a result, it can be understood that even though these models reach very simillar overall loss and accuracy the functions that they create are fundamentally determined by the data they are trained on. From the test accuracy and loss landscapes produced earlier it the models with the same initailisation but different data orders would be assumed to be more functionally silliar as the visualisations suggest similiarity, however, it is the case that the models with different jitailisations but same data order can have very different test accuracy and loss landscapes but can actually resemble similliar functions. 
+To evaluate the neural networks in the three different conditions based on the accuracy, we employ a landscape visualisation tool <d-cite key="li2018visualizing"></d-cite>, as used by <d-cite key="fort2019deep"></d-cite>, to present both 2D and 3D representations of the test error landscapes.
 
-<div class="row mt-3">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2025-05-07-distill-example/different_init_same_order_act.png" class="img-fluid rounded z-depth-1" %}
-    </div>
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2025-05-07-distill-example/same_init_different_order_act.png" class="img-fluid rounded z-depth-1" %}
-    </div>
-</div>
-<div class="caption">
-    Activation distance of model outputs on the test set of models trained with different initilisations but trained with the same data order compared to models trained with the same initilisation trained on different data orders. 
-</div>
+For the 2D and 3D test error plots below, at the minima, where X and Y coordinates are **(0,0)**, it can be observed that the SIDDO, Base and DISDO models have very similar test errors of 26.870, 27.020 and 27.240, respectively. Additionally, from both perspectives, it is hard to tell if the models are different, given the similarity between their 2D and 3D visualisations. 
 
-## Cosine Similairty
+Interact with the figures below and try to gain an understanding of the plots to get an intuitive gauge of the error spaces. 
 
-<div class="row mt-3">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2025-05-07-distill-example/different_init_same_order_cs.png" class="img-fluid rounded z-depth-1" %}
-    </div>
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2025-05-07-distill-example/same_init_different_order_cs.png" class="img-fluid rounded z-depth-1" %}
-    </div>
-</div>
-<div class="caption">
-    Cosine similarity of model outputs on the test set of models trained with different initilisations but trained with the same data order compared to models trained with the same initilisation trained on different data orders. 
-</div>
-
-
-
-<div class="row mt-3">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2025-05-07-distill-example/8.jpg" class="img-fluid z-depth-2" %}
-    </div>
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2025-05-07-distill-example/10.jpg" class="img-fluid z-depth-2" %}
-    </div>
-</div>
-
-<div class="row mt-3">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2025-05-07-distill-example/11.jpg" class="img-fluid"  %}
-    </div>
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2025-05-07-distill-example/12.jpg" class="img-fluid" %}
-    </div>
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2025-05-07-distill-example/7.jpg" class="img-fluid" %}
-    </div>
-</div>
-
-### Interactive Figures
-
-Here's how you could embed interactive figures that have been exported as HTML files.
-Note that we will be using plotly for this demo, but anything built off of HTML should work
-(**no extra javascript is allowed!**).
-All that's required is for you to export your figure into HTML format, and make sure that the file
-exists in the `assets/html/[SUBMISSION NAME]/` directory in this repository's root directory.
-To embed it into any page, simply insert the following code anywhere into your page.
-
-```markdown
-{% raw %}{% include [FIGURE_NAME].html %}{% endraw %} 
-```
-
-For example, the following code can be used to generate the figure underneath it.
-
-```python
-import pandas as pd
-import plotly.express as px
-
-df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/earthquakes-23k.csv')
-
-fig = px.density_mapbox(
-    df, lat='Latitude', lon='Longitude', z='Magnitude', radius=10,
-    center=dict(lat=0, lon=180), zoom=0, mapbox_style="stamen-terrain")
-fig.show()
-
-fig.write_html('./assets/html/2025-05-07-distill-example/plotly_demo_1.html')
-```
-
-And then include it with the following:
-
-```html
-{% raw %}<div class="l-page">
-  <iframe src="{{ 'assets/html/2025-05-07-distill-example/plotly_demo_1.html' | relative_url }}" frameborder='0' scrolling='no' height="600px" width="100%"></iframe>
-</div>{% endraw %}
-```
-
-Voila!
-#### Test Error 2D
 <div class="l-page">
   <iframe src="{{ 'assets/html/2025-05-07-distill-example/test_error_landscapes.html' | relative_url }}" frameborder='0' scrolling='no' height="600px" width="100%"></iframe>
 </div>
+<div class="caption">
+    <b>Two dimensional</b> test error plots in 51 random directions for the X and Y axsis<d-cite key="li2018visualizing"></d-cite>.<b>Left</b> represents a model with the same initailsation trained on a different data order (<b>SIDD0</b>) , <b>middle</b> is the base model (<b>Base</b>) and <b>right</b> is the model trained with a different initialisation but same data order as the base model (<b>DIDD0</b>). 
+</div>
 
-#### Test Error 3D
+
 <div class="l-page">
   <iframe src="{{ 'assets/html/2025-05-07-distill-example/3d_test_error_landscapes.html' | relative_url }}" frameborder='0' scrolling='no' height="600px" width="100%"></iframe>
 </div>
+<div class="caption">
+    <b>Three dimensional</b> test error plots in 51 random directions for the X and Y axsis<d-cite key="li2018visualizing"></d-cite>.<b>Left</b> represents a model with the same initailsation trained on a different data order (<b>SIDD0</b>) , <b>middle</b> is the base model (<b>Base</b>) and <b>right</b> is the model trained with a different initialisation but same data order as the base model (<b>DIDD0</b>). 
+</div>
 
+Given the similarity of the test error values and visualisations, one could assume that the models have the same function, with some minute differences, given the subtle misalignments on the 3D plots. However, we know that under these different training conditions, these models should differ in their functional representations.
+ 
+### Loss Analysis
 
-#### Test Loss 2D
-sdadsa
+When considering the loss landscape visualisation analysis<d-cite key="li2018visualizing"></d-cite> in the 2D and 3D figures below, we are confronted with similar issues. The 2D and 3D test loss plots below, at the minima, where X and Y coordinates are **(0,0)**, for SIDDO, Base and DISDO are 1.993, 1.948 and 1.932, respectively. Again, these values are not too dissimilar, and the 2D plots, in particular, suggest the same trend for their loss regions. Once again, we invite the reader to play with the 2D and 3D visualisations of the loss landscapes to get an intuitive feel for what the figures are conveying. 
+
 <div class="l-page">
   <iframe src="{{ 'assets/html/2025-05-07-distill-example/test_loss_landscapes.html' | relative_url }}" frameborder='0' scrolling='no' height="600px" width="100%"></iframe>
 </div>
-
-#### Test Loss 3D
-sdadsa
+<div class="caption">
+    <b>Two dimensional</b> loss landscape plots in 51 random directions for the X and Y axsis<d-cite key="li2018visualizing"></d-cite>.<b>Left</b> represents a model with the same initailsation trained on a different data order (<b>SIDD0</b>) , <b>middle</b> is the base model (<b>Base</b>) and <b>right</b> is the model trained with a different initialisation but same data order as the base model (<b>DIDD0</b>). 
+</div>
 <div class="l-page">
   <iframe src="{{ 'assets/html/2025-05-07-distill-example/3d_test_loss_landscapes.html' | relative_url }}" frameborder='0' scrolling='no' height="600px" width="100%"></iframe>
 </div>
+<div class="caption">
+    <b>Three dimensional</b> loss landscape plots in 51 random directions for the X and Y axsis<d-cite key="li2018visualizing"></d-cite>.<b>Left</b> represents a model with the same initailsation trained on a different data order (<b>SIDD0</b>) , <b>middle</b> is the base model (<b>Base</b>) and <b>right</b> is the model trained with a different initialisation but same data order as the base model (<b>DIDD0</b>). 
+</div>
 
-## Citations
+On this occasion, when we consider the loss landscape 3D visualisation, statements could be made about the similarity of the loss landscapes for the SIDDO, Base and DISDO models. SIDDO and the Base models appear to have similarly structured loss landscapes when compared against the Base and DISDO models. While qualitatively, this suggestion appears reasonable, we explain further in the blog post why this illusion of functional similarity does not hold for quantitative measures. 
 
-Citations are then used in the article body with the `<d-cite>` tag.
-The key attribute is a reference to the id provided in the bibliography.
-The key attribute can take multiple ids, separated by commas.
+### Functional Similarity Visualisations
 
-The citation is presented inline like this: <d-cite key="gregor2015draw"></d-cite> (a number that displays more information on hover).
-If you have an appendix, a bibliography is automatically created and populated in it.
+### Predcition Disagreement Analysis
 
-Distill chose a numerical inline citation style to improve readability of citation dense articles and because many of the benefits of longer citations are obviated by displaying more information on hover.
-However, we consider it good style to mention author last names if you discuss something at length and it fits into the flow well — the authors are human and it’s nice for them to have the community associate them with their work.
+### Summary of Qualitative Functional Analysis
 
-***
+## Quantative Functional Analysis
 
-## Footnotes
+In this section of the blog post, we extend the work of Fort et al., to show how quantitative metrics can provide improved insights into the functional similarity of neural networks and how often they tell a disjointed story from that presented by more qualitative lines of analysis. The quantitative metrics selected represent a portion of the available documented functional analysis metrics<d-cite key="klabunde2023similarity"></d-cite>. Akin to the previous section, we use the same architecture, datasets and experimental setups to explore the functional similarity. The only modification is that the SIDDO and DISD0 conditions are averaged across three models, which is more feasible because no visualisations are required. In the plots, **Model 1** always refers to the **Base** model. The descision to average the results was made to provide more robustness to the overall analysis and resulting conclusions made in this section. 
 
-Just wrap the text you would like to show up in a footnote in a `<d-footnote>` tag.
-The number of the footnote will be automatically generated.<d-footnote>This will become a hoverable footnote.</d-footnote>
+For consistency, our calculations of the respective metrics in the figures in this section below are done by comparing each model's output function against every other model and then averaging the metrics per epoch and plotting the resulting metrics values change across training.
 
-***
+### Activation Distance
 
-## Code Blocks
+Activation distance <d-cite key="chundawat2023can"></d-cite>, also reported as the norm of prediction difference<d-cite key="klabunde2023similarity"></d-cite>,  represents the *l2* distance of neural network outputs - from this distance, the predictive distance between neural networks can be better understood quantitatively. A **lower activation distance** closer to 0 indicates less functional deviation between model outputs, while a **higher activation distance** suggests functional divergence. It can be calculated by taking the outputs of two models and averaging the *l2* distance of outputs across input batches, **as shown in the Python code below:**
 
-This theme implements a built-in Jekyll feature, the use of Rouge, for syntax highlighting.
-It supports more than 100 languages.
-This example is in C++.
-All you have to do is wrap your code in a liquid tag:
+{% highlight python %}
 
-{% raw  %}
-{% highlight c++ linenos %}  <br/> code code code <br/> {% endhighlight %}
-{% endraw %}
+import torch
 
-The keyword `linenos` triggers display of line numbers. You can try toggling it on or off yourself below:
-
-{% highlight c++ %}
-
-int main(int argc, char const \*argv[])
-{
-string myString;
-
-    cout << "input a string: ";
-    getline(cin, myString);
-    int length = myString.length();
-
-    char charArray = new char * [length];
-
-    charArray = myString;
-    for(int i = 0; i < length; ++i){
-        cout << charArray[i] << " ";
-    }
-
-    return 0;
-}
+def activation_dist_fn(base,compare):
+    distances = torch.sqrt(torch.sum(torch.square(sf(base) - sf(compare)), axis = 1))
+    return distances.mean().item()
 
 {% endhighlight %}
 
-***
-
-## Diagrams
-
-This theme supports generating various diagrams from a text description using [jekyll-diagrams](https://github.com/zhustec/jekyll-diagrams){:target="\_blank"} plugin.
-Below, we generate a few examples of such diagrams using languages such as [mermaid](https://mermaid-js.github.io/mermaid/){:target="\_blank"}, [plantuml](https://plantuml.com/){:target="\_blank"}, [vega-lite](https://vega.github.io/vega-lite/){:target="\_blank"}, etc.
-
-**Note:** different diagram-generation packages require external dependencies to be installed on your machine.
-Also, be mindful of that because of diagram generation the first time you build your Jekyll website after adding new diagrams will be SLOW.
-For any other details, please refer to [jekyll-diagrams](https://github.com/zhustec/jekyll-diagrams){:target="\_blank"} README.
-
-**Note:** This is not supported for local rendering! 
-
-The diagram below was generated by the following code:
-
-{% raw %}
-```
-{% mermaid %}
-sequenceDiagram
-    participant John
-    participant Alice
-    Alice->>John: Hello John, how are you?
-    John-->>Alice: Great!
-{% endmermaid %}
-```
-{% endraw %}
-
-{% mermaid %}
-sequenceDiagram
-participant John
-participant Alice
-Alice->>John: Hello John, how are you?
-John-->>Alice: Great!
-{% endmermaid %}
-
-***
-
-## Tweets
-
-An example of displaying a tweet:
-{% twitter https://twitter.com/rubygems/status/518821243320287232 %}
-
-An example of pulling from a timeline:
-{% twitter https://twitter.com/jekyllrb maxwidth=500 limit=3 %}
-
-For more details on using the plugin visit: [jekyll-twitter-plugin](https://github.com/rob-murray/jekyll-twitter-plugin)
-
-***
-
-## Blockquotes
-
-<blockquote>
-    We do not grow absolutely, chronologically. We grow sometimes in one dimension, and not in another, unevenly. We grow partially. We are relative. We are mature in one realm, childish in another.
-    —Anais Nin
-</blockquote>
-
-***
-
-
-## Layouts
-
-The main text column is referred to as the body.
-It is the assumed layout of any direct descendants of the `d-article` element.
-
-<div class="fake-img l-body">
-  <p>.l-body</p>
+When we compare the activation distance of neural networks trained in different conditions, it can be observed that neural networks, regardless of SIDDO or DISD0 conditions, are dissimilar not only to the base model but to one another. If the activation distance over training remains at or close to 0, one could argue that the models have the same function. However, as we see this activation distance deviate over training, it can be understood that the models move in different functional directions during training. 
+<div class="row mt-3">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.html path="assets/img/2025-05-07-distill-example/same_init_different_order_act.png" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.html path="assets/img/2025-05-07-distill-example/different_init_same_order_act.png" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    Average activation distance of model outputs on the test set of models through training. <b>SIDDO</b> is presented on the <b>left</b> and <b>DISDO</b> is presented on the <b>right</b>.  <b>Model 1</b> represents the <b>Base</b> model. Higher values indicate increased functional divergence and lower values indicate functional similairty. 
 </div>
 
-For images you want to display a little larger, try `.l-page`:
+Moreover, from the above figure,, simple factors can impact the functional similarity of outputted networks. In this instance, models trained in the SIDDO condition are less functionally similar than models DISDO condition; this suggests that for models to be more functionally similar, the data order is more important than initialisation being the same. It could be feasible that this is a byproduct of primacy and having similar gradient updates during training. 
 
-<div class="fake-img l-page">
-  <p>.l-page</p>
+As a result, it can be understood that even though these models reach similar overall loss and accuracy, the functions they create are fundamentally determined by the data on which they are trained. From the test 3D loss landscapes produced earlier the models with the SIDDO condition would be assumed to be more functionally similar as the visualisations suggest similarity, however, it is the case that DISDO can have very different loss landscapes but can resemble similar functions when considering activation distance of predictions. 
+
+
+
+### Cosine Similairty
+
+Cosine Similarity is a metric to measure the cosine angle between two vectors. As a result, model outputs can be vectorised and compared to distinguish how similar their outputs are. For the cosine similarity metric, values that tend towards 1 suggest a more similar functional representation, while values close to zero suggest orthogonal outputs and values of -1 represent polar outputs. This provides a computationally inexpensive mechanism for calculating the functional similarity between model predictions. **The Python code below shows how it can be implemented:**
+
+The figure below for both the SIDDO and DISDO conditions largely reflects that of the results observed for the activation distance plots. At the start of training, the cosine similarity of the models is high, with a sharp drop off in the initial epochs, followed by a steady decline of cosine similarity during the middle of training, which finishes with a slight increase towards the end of training. The overall trend here is that each of the models have different functions as soon as training begins, and they remain different (albeit with varying values) throughout training. 
+
+{% highlight python %}
+import torch
+def cosine_sim_fn(model_1, model_2):
+    return cs(sf(torch.tensor(model_1)), sf(torch.tensor(model_2))).mean()
+{% endhighlight %}
+
+<div class="row mt-3">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.html path="assets/img/2025-05-07-distill-example/same_init_different_order_cs.png" class="img-fluid rounded z-depth-1" %}
+    </div>
+        <div class="col-sm mt-3 mt-md-0">
+        {% include figure.html path="assets/img/2025-05-07-distill-example/different_init_same_order_cs.png" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    Average Cosine similairty of model outputs on the test set of models through training. <b>SIDDO</b> is presented on the <b>left</b> and <b>DISDO</b> is presented on the <b>right</b>.  <b>Model 1</b> represents the <b>Base</b> model. Lower values indicate increased functional divergence and higher values indicate functional similairty.  
 </div>
 
-All of these have an outset variant if you want to poke out from the body text a little bit.
-For instance:
+Furthermore, there is an agreement between both activation distance and cosine similarity, which states that models within the DISDO are more functionally similar than models in the SIDDO condition. For DISDO, the final consent similarity value is higher than that of SIDDO; additionally, for SIDDO, the cosine similarity drops lower **(circa 0.75)** than any value for DISDO. The agreement across metrics further suggests that the data primacy and similar gradient steps are important and interesting aspects of the functional similarity of models. 
 
-<div class="fake-img l-body-outset">
-  <p>.l-body-outset</p>
+### JS Divergence
+Jenson-Shanon (JS) Divergence represents a weighted average of KL divergence that can be employed to evaluate between non-continuous distributions  <d-cite key="lin1991divergence"></d-cite> and is leveraged to understand the functional divergence between model outputs. Models with **high functional similarity have values that tend towards 0**, and models that are **less functionally similar have relatively higher values**. However, the distinction is less clear than with other metrics. **The code below details how JS Divergence can be implemented in Python:**
+{% highlight python %}
+
+import numpy as np
+import torch.nn as nn
+from numpy.linalg import norm
+from scipy.stats import entropy
+
+
+def JSD(P, Q):
+    P = nn.Softmax(dim=1)(P)
+    Q = nn.Softmax(dim=1)(Q)
+    _P = P / norm(P, ord=1)
+    _Q = Q / norm(Q, ord=1)
+    _M = 0.5 * (_P + _Q)
+    return (0.5 * (entropy(_P, _M) + entropy(_Q, _M))).mean()
+# Code from https://stackoverflow.com/questions/15880133/jensen-shannon-divergence
+
+{% endhighlight %}
+
+The figure below for both the SIDDO and DISDO conditions largely reflects that of the results observed for both activation distance and cosine similarity plots. At the start of training, the JS divergence of the models is essentially zero, with a sharp increase in the initial epochs, followed by a steady increase in the middle of training and a slight decrease towards the end of training. The noticeable trend is that each of the models has different functions as soon as training begins, and they remain different throughout training; again there is consistency between the functional distance of all the models in the respective conditions, which strengthen the notion that different functions form through training for different models.
+
+<div class="row mt-3">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.html path="assets/img/2025-05-07-distill-example/same_init_different_order_js.png" class="img-fluid rounded z-depth-1" %}
+    </div>
+        <div class="col-sm mt-3 mt-md-0">
+        {% include figure.html path="assets/img/2025-05-07-distill-example/different_init_same_order_js.png" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    Average Cosine similairty of model outputs on the test set of models through training. <b>SIDDO</b> is presented on the <b>left</b> and <b>DISDO</b> is presented on the <b>right</b>.  <b>Model 1</b> represents the <b>Base</b> model. Lower values indicate increased functional divergence and higher values indicate functional similairty.  
 </div>
 
-<div class="fake-img l-page-outset">
-  <p>.l-page-outset</p>
-</div>
+The plots conclude that there is a total agreement between all of the respective quantitative functional similarity measures that models within the DISDO are more functionally similar than models in the SIDDO condition. Models in SIDDO always have the most functional divergence from one another compared to models in the DISDO condition. As a result, the results strongly suggest the impacts of data primacy and similar gradient steps as a crucial factor in determining the functional similarity of models. 
 
-Occasionally you’ll want to use the full browser width.
-For this, use `.l-screen`.
-You can also inset the element a little from the edge of the browser by using the inset variant.
+### Summary of Quantative Functional Analysis
 
-<div class="fake-img l-screen">
-  <p>.l-screen</p>
-</div>
-<div class="fake-img l-screen-inset">
-  <p>.l-screen-inset</p>
-</div>
+A noticeable trend within quantitative functional analysis of models is that they clearly depict the functional diversity of neural networks trained on the same dataset. The metrics provide a more detailed insight into the functional distance between models, which is more grounded than qualitative approaches, which are open to more subjective interpretation. Additionally, it is interesting to note that while these metrics measure different qualities of functional similarity, they largely agree with general trends of functional analysis, which shows that they provide a more robust perspective of neural network functional diversity. Moreover, a more transparent understanding of functional diversity can be obtained when combined with visualisations. A point of interest that has arisen from the quantitative results is that models in the DISDO condition are more functionally similar than models within SIDDO, which shines a light on the functional variation derived from different data orders and the impact of data primacy and similar gradient updates to cause more functionally similar models.  
 
-The final layout is for marginalia, asides, and footnotes.
-It does not interrupt the normal flow of `.l-body`-sized text except on mobile screen sizes.
+# Impact of Functional Network Analysis
 
-<div class="fake-img l-gutter">
-  <p>.l-gutter</p>
-</div>
+Qualitative and quantitative functional analysis of the similarity of neural network outputs is something that is gaining popularity in the machine unlearning domain<d-cite key="chundawat2023can"></d-cite> as a way to verify unlearning. Additionally, recent studies have explored how to leverage functional preservation for neural network compression<d-cite key="mason-williams2024neural"></d-cite> and pruning<d-cite key="mason-williams2024what"></d-cite>, with explorations into understanding knowledge transfer through a functional lens<d-cite key="mason-williams2024knowledge"></d-cite>. 
 
-***
-
-## Other Typography?
-
-Emphasis, aka italics, with *asterisks* (`*asterisks*`) or _underscores_ (`_underscores_`).
-
-Strong emphasis, aka bold, with **asterisks** or __underscores__.
-
-Combined emphasis with **asterisks and _underscores_**.
-
-Strikethrough uses two tildes. ~~Scratch this.~~
-
-1. First ordered list item
-2. Another item
-⋅⋅* Unordered sub-list. 
-1. Actual numbers don't matter, just that it's a number
-⋅⋅1. Ordered sub-list
-4. And another item.
-
-⋅⋅⋅You can have properly indented paragraphs within list items. Notice the blank line above, and the leading spaces (at least one, but we'll use three here to also align the raw Markdown).
-
-⋅⋅⋅To have a line break without a paragraph, you will need to use two trailing spaces.⋅⋅
-⋅⋅⋅Note that this line is separate, but within the same paragraph.⋅⋅
-⋅⋅⋅(This is contrary to the typical GFM line break behavior, where trailing spaces are not required.)
-
-* Unordered lists can use asterisks
-- Or minuses
-+ Or pluses
-
-[I'm an inline-style link](https://www.google.com)
-
-[I'm an inline-style link with title](https://www.google.com "Google's Homepage")
-
-[I'm a reference-style link][Arbitrary case-insensitive reference text]
-
-[I'm a relative reference to a repository file](../blob/master/LICENSE)
-
-[You can use numbers for reference-style link definitions][1]
-
-Or leave it empty and use the [link text itself].
-
-URLs and URLs in angle brackets will automatically get turned into links. 
-http://www.example.com or <http://www.example.com> and sometimes 
-example.com (but not on Github, for example).
-
-Some text to show that the reference links can follow later.
-
-[arbitrary case-insensitive reference text]: https://www.mozilla.org
-[1]: http://slashdot.org
-[link text itself]: http://www.reddit.com
-
-Here's our logo (hover to see the title text):
-
-Inline-style: 
-![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
-
-Reference-style: 
-![alt text][logo]
-
-[logo]: https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 2"
-
-Inline `code` has `back-ticks around` it.
-
-```javascript
-var s = "JavaScript syntax highlighting";
-alert(s);
-```
- 
-```python
-s = "Python syntax highlighting"
-print(s)
-```
- 
-```
-No language indicated, so no syntax highlighting. 
-But let's throw in a <b>tag</b>.
-```
-
-Colons can be used to align columns.
-
-| Tables        | Are           | Cool  |
-| ------------- |:-------------:| -----:|
-| col 3 is      | right-aligned | $1600 |
-| col 2 is      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 |
-
-There must be at least 3 dashes separating each header cell.
-The outer pipes (|) are optional, and you don't need to make the 
-raw Markdown line up prettily. You can also use inline Markdown.
-
-Markdown | Less | Pretty
---- | --- | ---
-*Still* | `renders` | **nicely**
-1 | 2 | 3
-
-> Blockquotes are very handy in email to emulate reply text.
-> This line is part of the same quote.
-
-Quote break.
-
-> This is a very long line that will still be quoted properly when it wraps. Oh boy let's keep writing to make sure this is long enough to actually wrap for everyone. Oh, you can *put* **Markdown** into a blockquote. 
-
-
-Here's a line for us to start with.
-
-This line is separated from the one above by two newlines, so it will be a *separate paragraph*.
-
-This line is also a separate paragraph, but...
-This line is only separated by a single newline, so it's a separate line in the *same paragraph*.
+The authors of this blog post hope that employing the functional perspective when considering neural networks, combining qualitative and quantitative functional analysis to understand and compare neural networks, will aid endeavours in interpretability and help avoid common misconceptions of neural networks.
