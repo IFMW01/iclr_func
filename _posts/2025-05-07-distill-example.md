@@ -8,22 +8,22 @@ htmlwidgets: true
 hidden: false
 
 # Anonymize when submitting
-# authors:
-#   - name: Anonymous
-
 authors:
-  - name: Albert Einstein
-    url: "https://en.wikipedia.org/wiki/Albert_Einstein"
-    affiliations:
-      name: IAS, Princeton
-  - name: Boris Podolsky
-    url: "https://en.wikipedia.org/wiki/Boris_Podolsky"
-    affiliations:
-      name: IAS, Princeton
-  - name: Nathan Rosen
-    url: "https://en.wikipedia.org/wiki/Nathan_Rosen"
-    affiliations:
-      name: IAS, Princeton
+  - name: Anonymous
+
+# authors:
+#   - name: Albert Einstein
+#     url: "https://en.wikipedia.org/wiki/Albert_Einstein"
+#     affiliations:
+#       name: IAS, Princeton
+#   - name: Boris Podolsky
+#     url: "https://en.wikipedia.org/wiki/Boris_Podolsky"
+#     affiliations:
+#       name: IAS, Princeton
+#   - name: Nathan Rosen
+#     url: "https://en.wikipedia.org/wiki/Nathan_Rosen"
+#     affiliations:
+#       name: IAS, Princeton
 
 # must be the exact same name as your blogpost
 bibliography: 2025-05-07-distill-example.bib  
@@ -34,9 +34,9 @@ bibliography: 2025-05-07-distill-example.bib
 #   - please use this format rather than manually creating a markdown table of contents.
 toc:
   - name: Why the functional perspective
-  - name: Images and Figures
     subsections:
-    - name: Interactive Figures
+    - name: Popular methods for functional analysis
+  - name: TDODO
   - name: Citations
   - name: Footnotes
   - name: Code Blocks
@@ -44,6 +44,19 @@ toc:
   - name: Tweets
   - name: Layouts
   - name: Other Typography?
+
+  #   - name: Why the functional perspective
+  #   subsections: Re-producing Fort el al.,
+  #    - name: Accuracy  Landscape
+  #     - name: Loss Landscape
+  #     - name: TSNE PLots
+  #     - name: Prediction Disimilairy
+  # # - name: Updated work
+  # #   subsections: Extending Functional Analysis 
+  # #   - name: Cosine Similairty 
+  # #   - name: JS Divergence
+  # #   - name: Activation Distance
+  # # - name: Summary and Key Takeaways
 
 # Below is an example of injecting additional post-specific styles.
 # This is used in the 'Layouts' section of this post.
@@ -69,7 +82,9 @@ Note: please use the table of contents as defined in the front matter rather tha
 
 ## Why the functional perspective
 
-Exploring neural networks from the functional perspective 
+The gensis of regarding neural networks as function machines is owed to the original ensemble paper by BLAH et al,. that shows how shallow MLP networks employ different functions to enable improved performance. The functional perspective for deep neural networks mainly derrives from a study conducted by Fort et al,. that explores the properties of ensembled neural networks and via functional compariisons over just traditional loss and accuracy analysis. Their work answers important questions regarding the efficacy of ensembled network performance. 
+
+Understanding that neural networks form different functions over their input space is a critial idea that has numerous safety implications. In this blog post we reproduce existing functional analysis conducted by fort et al., on contemporary vision transformers and also introduce and present results for the best attempts within literature to capture function of neural netwokrs that have arrived since the existing work by fort el,. We then close the blog and outline the importance of this perspective over just pursing loss and accuracy based analysis in addition to addressing its wider role in how we consider interpretability and model safety in the future. 
 
 <!-- This theme supports rendering beautiful math in inline and display modes using [MathJax 3](https://www.mathjax.org/) engine.
 You just need to surround your math expression with `$$`, like `$$ E = mc^2 $$`.
@@ -86,20 +101,32 @@ Note that MathJax 3 is [a major re-write of MathJax](https://docs.mathjax.org/en
 that brought a significant improvement to the loading and rendering speed, which is now 
 [on par with KaTeX](http://www.intmath.com/cg5/katex-mathjax-comparison.php). -->
 
+### Popular methods for functional analysis
 
-## Images and Figures
+## How can functions differ and what does this mean
 
-Its generally a better idea to avoid linking to images hosted elsewhere - links can break and you
-might face losing important information in your blog post.
-To include images in your submission in this way, you must do something like the following:
+Neural networks that train on the same data can be considered as functional representation of its input space. As a result models that train on the same data can vary considerably on inputs which leads to different overall behaviour. For exmaple in the figure below we can see two hypothetical models that are trained on the the ten class image classifcation task of CIFAR10. It is evident for these models that on the input image of a cat both models predict that the inout image is a cat - additionally it can be noted that both models have the same loss value of 1.139.Considering these two metrics alone could lead to the misconception that these models are functionally equivalent given the absolute similairty of their loss and accuracy. However, when considering the output probailities which represent the output of the function for each model it is evident that the function the neural networks represent is varied. 
 
-```markdown
-{% raw %}{% include figure.html path="assets/img/2025-05-07-distill-example/iclr.png" class="img-fluid" %}{% endraw %}
-```
+For model one the 4 highest prediction probabilities other than the predicted class of cat (0.32) are that of the automobile (0.20), airplane (0.12), ship (0.10) and dog (0.10) - as a result from this output perspective it could be argued that the models function puts this example closer to various vehicles over other animals. On the otherhand for modle two the 4 highest prediction probabilities other than the predicted class of cat (0.32) are that of the dog (0.20), deer (0.12), bird (0.10) and frog (0.10) - this models function puts the input image of a cat closer to other species of animals. 
 
-which results in the following image:
+When considering the functions of the two modles if we were to use them in deployment - despite the accuracy and the loss being equivalent, it would be reasonable to use model two for these types of inputs as it has a function that better captures the distinction between animals and vehicles which is an important distinction. While this is a contrived exmaple it is not infeasible that such functions could arise in practice which is why model evaluation should be expanded from loss and accuracy to include functional perspectives.
 
-{% include figure.html path="assets/img/2025-05-07-distill-example/iclr.png" class="img-fluid" %}
+
+<div class="row mt-3">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.html path="assets/pdf/Model_One.pdf" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.html path="assets/pdf/Model_Two.pdf" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    An example of two hypothetical models trained on CIFAR10 that have equivalent prediction agreement, accuracy and loss on the input space while concurrently having equivalent overall functions.
+</div>
+
+<!-- {% include figure.html path="assets/pdf/Model_One.pdf" class="img-fluid" %}
+
+{% include figure.html path="assets/pdf/Model_Two.pdf" class="img-fluid" %} -->
 
 To ensure that there are no namespace conflicts, you must save your asset to your unique directory
 `/assets/img/2025-05-07-[SUBMISSION NAME]` within your submission.
@@ -108,19 +135,37 @@ Please avoid using the direct markdown method of embedding images; they may not 
 Some more complex ways to load images (note the different styles of the shapes/shadows):
 
 
+## Activation Distance
 
+Activation distance represents the l1 distance of neural network outputs - from this distance metrics can be understood between netwokrs on inputs spaces. When we compare the activation distance of neural networks trained in different conditions it can be observed that smple factors can impact the functional similairty of outputted networks. In this instance the case of models with the same initialisation but trained with different data orders are actually less functionally similliar than models that start at different initilisations but are trained in the same data order. As a result, it can be understood that even though these models reach very simillar overall loss and accuracy the functions that they create are fundamentally determined by the data they are trained on. From the test accuracy and loss landscapes produced earlier it the models with the same initailisation but different data orders would be assumed to be more functionally silliar as the visualisations suggest similiarity, however, it is the case that the models with different jitailisations but same data order can have very different test accuracy and loss landscapes but can actually resemble similliar functions. 
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.html path="assets/img/2025-05-07-distill-example/different_init_same_order_act.png" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2025-05-07-distill-example/7.jpg" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/2025-05-07-distill-example/same_init_different_order_act.png" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
-    A simple, elegant caption looks good between image rows, after each row, or doesn't have to be there at all.
+    Activation distance of model outputs on the test set of models trained with different initilisations but trained with the same data order compared to models trained with the same initilisation trained on different data orders. 
 </div>
+
+## Cosine Similairty
+
+<div class="row mt-3">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.html path="assets/img/2025-05-07-distill-example/different_init_same_order_cs.png" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.html path="assets/img/2025-05-07-distill-example/same_init_different_order_cs.png" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    Cosine similarity of model outputs on the test set of models trained with different initilisations but trained with the same data order compared to models trained with the same initilisation trained on different data orders. 
+</div>
+
+
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
