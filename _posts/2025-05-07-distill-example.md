@@ -191,6 +191,32 @@ On this occasion, when we consider the loss landscape 3D visualisation, statemen
 
 ### Functional Similarity Visualisations
 
+For the functional analysis of neural networks Fort et al., employed a TSNE embedding visualisation to visualise qualitatively how functions diverge. Their findings showed that despite neural networks having very similliar loss and accuracy they are respresneted in different functional spaces. The visualisation servered as compelling evidence for neural networks forming different noisy functionsds<d-cite key="hansen1990neural"></d-cite>. In the recreation of this plot we have used TSNE visualisations and other embeddings (PCA, MDS and Spectral Embeddings) to show the same functional divergence. In the figure below we plot the function during training which shows that neural networks become increasingly functionally dissimilair over training. The agreeement of this general trend across different embedding stratergies shows that this finding is robust. 
+
+<div class="row mt-3">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.html path="assets/img/2025-05-07-distill-example/compare_t-sne_projection_3d.png" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.html path="assets/img/2025-05-07-distill-example/compare_pca_projection_3d.png" %}
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.html path="assets/img/2025-05-07-distill-example/compare_MDS_projection_3d.png" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.html path="assets/img/2025-05-07-distill-example/compare_spectral_embedding_projection_3d.png" %}
+    </div>
+  </div>
+<div class="caption">
+    Qualitative visualisations of the SIDDO, Base and DISDO functions over training. <b>Top-Left</b> TSNE<d-cite key="van2008visualizing"></d-cite>, <b>Top-Right</b> Pinciple Component Analysis<d-cite key="pearson1901liii"></d-cite> , <b>Bottom-Left</b> Multiple Dimensional Scalling<d-cite key="mead1992review"></d-cite>  and <b>Bottom-Right</b> Spectral Embedding<d-cite key="10.5555/2980539.2980616"></d-cite> 
+</div>
+
+However, it is important to note that while there is an agreeement in the general trend of functional divergence each of the visualisation stratergies show different training paths - the naunces in each method functional pathways between SIDDO, Base and DISDO could lead to different conclusions which may be an arteffact of the specific method. As a result, to have the most informative view when using such qualiatative methods it is important to use a range of embeddings to confirm overall trends without reading too much into the functional illusions that stem from a particular method. Moreover, it is challenges to make statements on the specifc functional proximities of different training conditions on functional similairty by this method as eahc of the final functional locations are hard to compare qualiatatively. 
+
+
+
 ### Predcition Disagreement Analysis
 
 ### Summary of Qualitative Functional Analysis
