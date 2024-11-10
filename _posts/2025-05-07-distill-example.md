@@ -94,7 +94,7 @@ _styles: >
 
 <!-- Note: please use the table of contents as defined in the front matter rather than the traditional markdown styling. -->
 
-## Why the functional perspective
+##  Why the functional perspective
 
 The gensis of regarding neural networks as function machines is owed to the original analysis of ensembling overfit neural networks in the 1990's as a way to reduce the residual generalisation error for two-hidden layer networks performing classification tasks, inspired by notions of fault tolerant computing, wherein a noisy rule is formed by combining many local minima using a collective decision strategy making the resulting output less fallible than any single network<d-cite key="hansen1990neural"></d-cite>; showsing how shallow MLP networks employ different functions to enable improved performance. Fort et al,. popularised this understanding for deep neural networks where they eplored the properties of ensembled neural networks and via prediction compariisons over just traditional loss and accuracy analysis<d-cite key="fort2019deep"></d-cite>; the work echos the understanding of "noisy" function combination to answer important questions regarding the efficacy of ensembled network performance. 
 
@@ -115,7 +115,7 @@ Note that MathJax 3 is [a major re-write of MathJax](https://docs.mathjax.org/en
 that brought a significant improvement to the loading and rendering speed, which is now 
 [on par with KaTeX](http://www.intmath.com/cg5/katex-mathjax-comparison.php). -->
 
-### How Neural Network Functions Differ
+###  <a name="why_func" id="why_func">How Neural Network Functions Differ/a> 
 
 Neural networks that train on the same data can be considered as functional representation of its input space. As a result models that train on the same data can vary considerably on inputs which leads to different overall behaviour. For exmaple in the figure below we can see two hypothetical models that are trained on the the ten class image classifcation task of CIFAR10. It is evident for these models that on the input image of a cat both models predict that the inout image is a cat - additionally it can be noted that both models have the same loss value of 1.139.Considering these two metrics alone could lead to the misconception that these models are functionally equivalent given the absolute similairty of their loss and accuracy. However, when considering the output probailities which represent the output of the function for each model it is evident that the function the neural networks represent is varied. 
 
@@ -219,7 +219,7 @@ However, it is important to note that while there is an agreement in the general
 
 ### Predcition Disagreement Analysis
 
-Prediction disagreement quantifies how frequently two or more neural networks have the same classification on the same input. It provides a proxy for understanding which inputs neural networks diverge on and allows one to reason how these networks represent different functions. The figure in the section **How Neural Network Functions Differ** illustrates how this metric may provide functional similarity illusions as models can agree on the final prediction but have a divergent prediction space that can indicate apparent modelling properties absent in this analysis. We consider this another qualitative method as it is only capturing a general trend which aids the understanding of functional divergence but does not provide a genuinely quantitative means for evaluating the functions of each model and how they are different. 
+Prediction disagreement quantifies how frequently two or more neural networks have the same classification on the same input. It provides a proxy for understanding which inputs neural networks diverge on and allows one to reason how these networks represent different functions. The figure in the section <a href="#why_func">**How Neural Network Functions Differ**</a> illustrates how this metric may provide functional similarity illusions as models can agree on the final prediction but have a divergent prediction space that can indicate apparent modelling properties absent in this analysis. We consider this another qualitative method as it is only capturing a general trend which aids the understanding of functional divergence but does not provide a genuinely quantitative means for evaluating the functions of each model and how they are different. 
 
 The figure below depicts how the prediction disagreement changes between the base model and the models in the SIDDO and DISDO conditions during training. The figure provides an intuitive understanding that each model has different functions, which results in prediction discrepancy, which gets stronger through training. However, despite the pitfalls of this analysis of functional analysis it does reaffirm the notion that accuracy and loss provide a myopic perspective of simialirty that must be explored beyond to understand the properties of individual models.
 
