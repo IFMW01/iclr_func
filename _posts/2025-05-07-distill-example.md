@@ -115,7 +115,7 @@ Note that MathJax 3 is [a major re-write of MathJax](https://docs.mathjax.org/en
 that brought a significant improvement to the loading and rendering speed, which is now 
 [on par with KaTeX](http://www.intmath.com/cg5/katex-mathjax-comparison.php). -->
 
-###  <a name="why_func" id="why_func">How Neural Network Functions Differ/a> 
+###  <a name="why_func" id="why_func">How Neural Network Functions Differ</a> 
 
 Neural networks that train on the same data can be considered as functional representation of its input space. As a result models that train on the same data can vary considerably on inputs which leads to different overall behaviour. For exmaple in the figure below we can see two hypothetical models that are trained on the the ten class image classifcation task of CIFAR10. It is evident for these models that on the input image of a cat both models predict that the inout image is a cat - additionally it can be noted that both models have the same loss value of 1.139.Considering these two metrics alone could lead to the misconception that these models are functionally equivalent given the absolute similairty of their loss and accuracy. However, when considering the output probailities which represent the output of the function for each model it is evident that the function the neural networks represent is varied. 
 
