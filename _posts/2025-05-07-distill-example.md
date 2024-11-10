@@ -191,7 +191,7 @@ On this occasion, when we consider the loss landscape 3D visualisation, statemen
 
 ### Functional Similarity Visualisations
 
-For the functional analysis of neural networks Fort et al., employed a TSNE embedding visualisation to visualise qualitatively how functions diverge. Their findings showed that despite neural networks having very similliar loss and accuracy they are respresneted in different functional spaces. The visualisation servered as compelling evidence for neural networks forming different noisy functionsds<d-cite key="hansen1990neural"></d-cite>. In the recreation of this plot we have used TSNE visualisations and other embeddings (PCA, MDS and Spectral Embeddings) to show the same functional divergence. In the figure below we plot the function during training which shows that neural networks become increasingly functionally dissimilair over training. The agreeement of this general trend across different embedding stratergies shows that this finding is robust. 
+For the functional analysis of neural networks Fort et al., employed a TSNE embedding visualisation to visualise qualitatively how functions diverge. Their findings showed that although neural networks have similar loss and accuracy, they are represented in different functional spaces. The visualisation served as compelling evidence for neural networks forming different noisy functions <d-cite key="hansen1990neural"></d-cite>. In the recreation of this plot we have used TSNE visualisations and other embeddings (PCA, MDS and Spectral Embeddings) to show the same functional divergence. In the figure below, we plot the function during training, which shows that neural networks become increasingly functionally dissimilar over training. The agreement of this general trend across different embedding strategies shows that this finding is robust. 
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
@@ -213,13 +213,21 @@ For the functional analysis of neural networks Fort et al., employed a TSNE embe
     Qualitative visualisations of the SIDDO, Base and DISDO functions over training. <b>Top-Left</b> TSNE<d-cite key="van2008visualizing"></d-cite>, <b>Top-Right</b> Pinciple Component Analysis<d-cite key="pearson1901liii"></d-cite> , <b>Bottom-Left</b> Multiple Dimensional Scalling<d-cite key="mead1992review"></d-cite>  and <b>Bottom-Right</b> Spectral Embedding<d-cite key="10.5555/2980539.2980616"></d-cite> 
 </div>
 
-However, it is important to note that while there is an agreeement in the general trend of functional divergence each of the visualisation stratergies show different training paths - the naunces in each method functional pathways between SIDDO, Base and DISDO could lead to different conclusions which may be an arteffact of the specific method. As a result, to have the most informative view when using such qualiatative methods it is important to use a range of embeddings to confirm overall trends without reading too much into the functional illusions that stem from a particular method. Moreover, it is challenges to make statements on the specifc functional proximities of different training conditions on functional similairty by this method as eahc of the final functional locations are hard to compare qualiatatively. 
+However, it is important to note that while there is an agreement in the general trend of functional divergence, each of the visualisation strategies shows different training paths - the nuances in each method's functional pathways between SIDDO, Base, and DISDO could lead to different conclusions which may be an artefact of the specific method. As a result, to have the most informative view when using such qualitative methods, it is essential to use a range of embeddings to confirm overall trends without reading too much into the functional illusions that stem from a particular method. Moreover, it is challenging to make statements on the specific functional proximities of different training conditions on functional similarity via functional visualisation as each of the final functional locations is hard to compare qualitatively and can only be commeteted on subjectively. 
 
 
 
 ### Predcition Disagreement Analysis
 
+Prediction disagreement quantifies how frequently two or more neural networks have the same classification on the same input. It provides a proxy for understanding which inputs neural networks diverge on and allows one to reason how these networks represent different functions. The figure in the section **How Neural Network Functions Differ** illustrates how this metric may provide functional similarity illusions as models can agree on the final prediction but have a divergent prediction space that can indicate apparent modelling properties absent in this analysis. We consider this another qualitative method as it is only capturing a general trend which aids the understanding of functional divergence but does not provide a genuinely quantitative means for evaluating the functions of each model and how they are different. 
+
+The figure below depicts how the prediction disagreement changes between the base model and the models in the SIDDO and DISDO conditions during training. The figure provides an intuitive understanding that each model has different functions, which results in prediction discrepancy, which gets stronger through training. However, despite the pitfalls of this analysis of functional analysis it does reaffirm the notion that accuracy and loss provide a myopic perspective of simialirty that must be explored beyond to understand the properties of individual models.
+
+
+
 ### Summary of Qualitative Functional Analysis
+
+
 
 ## Quantative Functional Analysis
 
