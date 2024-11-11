@@ -27,10 +27,6 @@ authors:
 # must be the exact same name as your blogpost
 bibliography: 2025-05-07-distill-example.bib  
 
-# Add a table of contents to your post.
-#   - make sure that TOC names match the actual section names
-#     for hyperlinks within the post to work correctly. 
-#   - please use this format rather than manually creating a markdown table of contents.
 toc:
   - name: Why the Functional Perspective
     subsections:
@@ -53,31 +49,7 @@ toc:
       - name: JS divergence 
       - name: Summary of Quantative Functional Analysis
   - name: Impact of Functional Network Analysis
-  # - name: Conclusions
-  # - name: Citations
-  # - name: Footnotes
-  # - name: Code Blocks
-  # - name: Diagrams
-  # - name: Tweets
-  # - name: Layouts
-  # - name: Other Typography?
 
-  #   - name: Why the functional perspective
-  #   subsections: Re-producing Fort el al.,
-  #    - name: Test Error Analysis
-  #     - name: Loss Analysis
-  #     - name: TSNE PLots
-  #     - name: Prediction Disimilairy
-  # # - name: Updated work
-  # #   subsections: Extending Functional Analysis 
-  # #   - name: Cosine Similairty 
-  # #   - name: JS Divergence
-  # #   - name: Activation Distance
-  # # - name: Summary and Key Takeaways
-
-# Below is an example of injecting additional post-specific styles.
-# This is used in the 'Layouts' section of this post.
-# If you use this post as a template, delete this _styles block.
 _styles: >
   .fake-img {
     background: #bbb;
@@ -265,6 +237,8 @@ For consistency, our calculations of the respective metrics in the figures in th
 
 ### Activation Distance
 
+$$\|\mathbf{m^{1}} - \mathbf{m^{2}}\|_2 = \sqrt{(m_{1}^{1} - m_{1}^{2})^2 + (m_{2}^{1} - m_{2}^{2}) +...+ (m_{n}^{1} - m_{n}^{2})}$$
+
 Activation distance <d-cite key="chundawat2023can"></d-cite>, also reported as the norm of prediction difference<d-cite key="klabunde2023similarity"></d-cite>,  represents the *l2* distance of neural network outputs - from this distance, the predictive distance between neural networks can be better understood quantitatively. A **lower activation distance** closer to 0 indicates less functional deviation between model outputs, while a **higher activation distance** suggests functional divergence. It can be calculated by taking the outputs of two models and averaging the *l2* distance of outputs across input batches, **as shown in the Python code below:**
 
 {% highlight python %}
@@ -300,6 +274,8 @@ As a result, it can be understood that even though these models reach similar ov
 
 ### Cosine Similairty
 
+$$\cos \theta = \frac{\mathbf{m^{1}(input)} \cdot \mathbf{m^{2}(input)}}{\|\mathbf{m^{1}(input)}\| \|\mathbf{m^{2}(input)}\|}$$
+
 Cosine Similarity is a metric to measure the cosine angle between two vectors. As a result, model outputs can be vectorised and compared to distinguish how similar their outputs are. For the cosine similarity metric, values that tend towards 1 suggest a more similar functional representation, while values close to zero suggest orthogonal outputs and values of -1 represent polar outputs. This provides a computationally inexpensive mechanism for calculating the functional similarity between model predictions. **The Python code below shows how it can be implemented:**
 
 {% highlight python %}
@@ -326,6 +302,13 @@ The figure below for both the **SIDDO** and **DISDO** conditions largely reflect
 Furthermore, there is an agreement between both activation distance and cosine similarity, which states that models within the **DISDO** are more functionally similar than models in the **SIDDO** condition. For **DISDO**, the final consent similarity value is higher than that of **SIDDO**; additionally, for **SIDDO**, the cosine similarity drops lower **(circa 0.75)** than any value for **DISDO**. The agreement across metrics further suggests the  <a href="#data_primacy">**The Data Primacy Effect**</a>.
 
 ### JS Divergence
+
+$$\mathrm{JS}(m^{1} \| m^{2}) = \frac{1}{2} \mathrm{KL}(m^{1}(input) \| M) + \frac{1}{2} \mathrm{KL}(m^{2}(input) \| M)$$
+
+$$M = \frac{1}{2}(m^{1}(input) + m^{2}(input)$$
+
+$$\mathrm{KL}(m^{1}(input) \| M) = \sum_{i} m^{1}(input)(i) \log \frac{m^{1}(input)(i)}{M(i)}$$
+
 Jenson-Shanon (JS) Divergence represents a weighted average of KL divergence that can be employed to evaluate between non-continuous distributions  <d-cite key="lin1991divergence"></d-cite> and is leveraged to understand the functional divergence between model outputs. Models with **high functional similarity have values that tend towards 0**, and models that are **less functionally similar have relatively higher values**. However, the distinction is less clear than with other metrics. **The code below details how JS Divergence can be implemented in Python:**
 {% highlight python %}
 
