@@ -227,8 +227,7 @@ Prediction disagreement quantifies how frequently two or more neural networks ha
 The figure below depicts how the prediction disagreement changes between the base model and the models in the **SIDDO** and **DISDO** conditions during training. The figure provides an intuitive understanding that each model has different functions, which results in prediction discrepancy, which gets stronger through training. However, despite the pitfalls of this analysis of functional analysis it does reaffirm the notion that accuracy and loss provide a myopic perspective of simialirty that must be explored beyond to understand the properties of individual models.
 
 <div class="l-page">
-  <iframe src="{{ 'assets/html/2025-05-07-distill-example/SIDDO_predictions.html' | relative_url }}" frameborder='0' scrolling='no' height="600px" width="100%"></iframe>
-  <iframe src="{{ 'assets/html/2025-05-07-distill-example/DISDO_predictions.html' | relative_url }}" frameborder='0' scrolling='no' height="600px" width="100%"></iframe>
+  <iframe src="{{ 'assets/html/2025-05-07-distill-example/predictions.html' | relative_url }}" frameborder='0' scrolling='no' height="600px" width="100%"></iframe>
 </div>
 <div class="caption">
  Prediction Disimilairty of <b>SIDDO</b> compared to <b>Base</b> (<b>Left</b>) and <b>DISDO</b> compared to <b>Base</b> (<b>Right</b>) during training - a higher prediction disimailirty indicates less agreement on prediction.
