@@ -157,15 +157,18 @@ Through these three conditions, we show how qualitative methods of analysing the
 
 To evaluate the neural networks in the three different conditions based on the accuracy, we employ a landscape visualisation tool <d-cite key="li2018visualizing"></d-cite>, as used by <d-cite key="fort2019deep"></d-cite>, to present both 2D and 3D representations of the test error landscapes.
 
-For the 2D and 3D test error plots below, at the minima, where X and Y coordinates are **(0,0)**, it can be observed that the **SIDDO**, Base and **DISDO** models have very similar test errors of 26.870, 27.020 and 27.240, respectively. Additionally, from both perspectives, it is hard to tell if the models are different, given the similarity between their 2D and 3D visualisations. 
+For the 2D and 3D test error plots below, at the minima, where X and Y coordinates are **(0,0)**, it can be observed that the **SIDDO**, Base and **DISDO** models have very similar test errors of **26.870**, **27.020** and **27.240**, respectively. Additionally, from both perspectives, it is hard to tell if the models are different, given the similarity between their 2D and 3D visualisations. 
 
 Interact with the figures below and try to gain an understanding of the plots to get an intuitive gauge of the error spaces. 
 
 <div class="l-page">
   <iframe src="{{ 'assets/html/2025-05-07-distill-example/test_error_landscapes.html' | relative_url }}" frameborder='0' scrolling='no' height="600px" width="100%"></iframe>
 </div>
+
 <div class="caption">
-    <b>Two dimensional</b> test error plots in 51 random directions for the X and Y axsis<d-cite key="li2018visualizing"></d-cite>.<b>Left</b> represents a model with the same initailsation trained on a different data order (<b>SIDD0</b>) , <b>middle</b> is the base model (<b>Base</b>) and <b>right</b> is the model trained with a different initialisation but same data order as the base model (<b>DIDD0</b>). 
+    <b>Two dimensional</b> test error landscape plots around the local minima by perturbing the parameters along two random approximately orthogonal filter-wise normalised directions in weight space X and Y <d-cite key="li2018visualizing"></d-cite>. 
+    <br>
+    <b>Left</b> represents a model with the same initailsation trained on a different data order (<b>SIDD0</b>) , <b>middle</b> is the base model (<b>Base</b>) and <b>right</b> is the model trained with a different initialisation but same data order as the base model (<b>DIDD0</b>). 
 </div>
 
 
@@ -173,26 +176,32 @@ Interact with the figures below and try to gain an understanding of the plots to
   <iframe src="{{ 'assets/html/2025-05-07-distill-example/3d_test_error_landscapes.html' | relative_url }}" frameborder='0' scrolling='no' height="600px" width="100%"></iframe>
 </div>
 <div class="caption">
-    <b>Three dimensional</b> test error plots in 51 random directions for the X and Y axsis<d-cite key="li2018visualizing"></d-cite>.<b>Left</b> represents a model with the same initailsation trained on a different data order (<b>SIDD0</b>) , <b>middle</b> is the base model (<b>Base</b>) and <b>right</b> is the model trained with a different initialisation but same data order as the base model (<b>DIDD0</b>). 
+    <b>Three dimensional</b> test error landscape plots around the local minima by perturbing the parameters along two random approximately orthogonal filter-wise normalised directions in weight space X and Y<d-cite key="li2018visualizing"></d-cite>.
+    <br>
+    <b>Left</b> represents a model with the same initailsation trained on a different data order (<b>SIDD0</b>) , <b>middle</b> is the base model (<b>Base</b>) and <b>right</b> is the model trained with a different initialisation but same data order as the base model (<b>DIDD0</b>). 
 </div>
 
 Given the similarity of the test error values and visualisations, one could assume that the models have the same function, with some minute differences, given the subtle misalignments on the 3D plots. However, we know that under these different training conditions, these models should differ in their functional representations.
  
 ### Loss Analysis
 
-When considering the loss landscape visualisation analysis<d-cite key="li2018visualizing"></d-cite> in the 2D and 3D figures below, we are confronted with similar issues. The 2D and 3D test loss plots below, at the minima, where X and Y coordinates are **(0,0)**, for **SIDDO**, Base and **DISDO** are 1.993, 1.948 and 1.932, respectively. Again, these values are not too dissimilar, and the 2D plots, in particular, suggest the same trend for their loss regions. Once again, we invite the reader to play with the 2D and 3D visualisations of the loss landscapes to get an intuitive feel for what the figures are conveying. 
+When considering the loss landscape visualisation analysis<d-cite key="li2018visualizing"></d-cite> in the 2D and 3D figures below, we are confronted with similar issues. The 2D and 3D test loss plots below, at the minima, where X and Y coordinates are **(0,0)**, for **SIDDO**, Base and **DISDO** are **1.993**, **1.948** and **1.932**, respectively. Again, these values are not too dissimilar, and the 2D plots, in particular, suggest the same trend for their loss regions. Once again, we invite the reader to play with the 2D and 3D visualisations of the loss landscapes to get an intuitive feel for what the figures are conveying. 
 
 <div class="l-page">
   <iframe src="{{ 'assets/html/2025-05-07-distill-example/test_loss_landscapes.html' | relative_url }}" frameborder='0' scrolling='no' height="600px" width="100%"></iframe>
 </div>
 <div class="caption">
-    <b>Two dimensional</b> loss landscape plots in 51 random directions for the X and Y axsis<d-cite key="li2018visualizing"></d-cite>.<b>Left</b> represents a model with the same initailsation trained on a different data order (<b>SIDD0</b>) , <b>middle</b> is the base model (<b>Base</b>) and <b>right</b> is the model trained with a different initialisation but same data order as the base model (<b>DIDD0</b>). 
+    <b>Two dimensional</b>loss landscape plots around the local minima by perturbing the parameters along two random approximately orthogonal filter-wise normalised directions in weight space X and Y<d-cite key="li2018visualizing"></d-cite>.
+    <br>
+    <b>Left</b> represents a model with the same initailsation trained on a different data order (<b>SIDD0</b>) , <b>middle</b> is the base model (<b>Base</b>) and <b>right</b> is the model trained with a different initialisation but same data order as the base model (<b>DIDD0</b>). 
 </div>
 <div class="l-page">
   <iframe src="{{ 'assets/html/2025-05-07-distill-example/3d_test_loss_landscapes.html' | relative_url }}" frameborder='0' scrolling='no' height="600px" width="100%"></iframe>
 </div>
 <div class="caption">
-    <b>Three dimensional</b> loss landscape plots in 51 random directions for the X and Y axsis<d-cite key="li2018visualizing"></d-cite>.<b>Left</b> represents a model with the same initailsation trained on a different data order (<b>SIDD0</b>) , <b>middle</b> is the base model (<b>Base</b>) and <b>right</b> is the model trained with a different initialisation but same data order as the base model (<b>DIDD0</b>). 
+    <b>Three dimensional</b> loss landscape plots around the local minima by perturbing the parameters along two random approximately orthogonal filter-wise normalised directions in weight space X and Y<d-cite key="li2018visualizing"></d-cite>.
+    <br>
+    <b>Left</b> represents a model with the same initailsation trained on a different data order (<b>SIDD0</b>) , <b>middle</b> is the base model (<b>Base</b>) and <b>right</b> is the model trained with a different initialisation but same data order as the base model (<b>DIDD0</b>). 
 </div>
 
 On this occasion, when we consider the loss landscape 3D visualisation, statements could be made about the similarity of the loss landscapes for the **SIDDO**, Base and **DISDO** models. **SIDDO** and the Base models appear to have similarly structured loss landscapes when compared against the Base and **DISDO** models. While qualitatively, this suggestion appears reasonable, we explain further in the blog post why this illusion of functional similarity does not hold for quantitative measures. 
@@ -206,7 +215,7 @@ For the functional analysis of neural networks Fort et al., employed a TSNE embe
         {% include figure.html path="assets/img/2025-05-07-distill-example/compare_t-sne_projection_3d.png" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2025-05-07-distill-example/compare_pca_projection_3d.png" %}
+        {% include figure.html path="assets/img/2025-05-07-distill-example/compare_pca_projection_3d.png" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="row mt-3">
@@ -214,7 +223,7 @@ For the functional analysis of neural networks Fort et al., employed a TSNE embe
         {% include figure.html path="assets/img/2025-05-07-distill-example/compare_MDS_projection_3d.png" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2025-05-07-distill-example/compare_spectral_embedding_projection_3d.png" %}
+        {% include figure.html path="assets/img/2025-05-07-distill-example/compare_spectral_embedding_projection_3d.png" class="img-fluid rounded z-depth-1" %}
     </div>
   </div>
 <div class="caption">
@@ -239,7 +248,7 @@ The figure below depicts how the prediction disagreement changes between the bas
 
 ## Quantative Functional Analysis
 
-In this section of the blog post, we extend the work of Fort et al., to show how quantitative metrics can provide improved insights into the functional similarity of neural networks and how often they tell a disjointed story from that presented by more qualitative lines of analysis. The quantitative metrics selected represent a portion of the available documented functional analysis metrics<d-cite key="klabunde2023similarity"></d-cite>. Akin to the previous section, we use the same architecture, datasets and experimental setups to explore the functional similarity. The only modification is that the **SIDDO** and DISD0 conditions are averaged across three models, which is more feasible because no visualisations are required. In the plots, **Model 1** always refers to the **Base** model. The descision to average the results was made to provide more robustness to the overall analysis and resulting conclusions made in this section. 
+In this section of the blog post, we extend the work of Fort et al., to show how quantitative metrics can provide improved insights into the functional similarity of neural networks and how often they tell a disjointed story from that presented by more qualitative lines of analysis. The quantitative metrics selected represent a portion of the available documented functional analysis metrics<d-cite key="klabunde2023similarity"></d-cite>. Akin to the previous section, we use the same architecture, datasets and experimental setups to explore the functional similarity. The only modification is that the **SIDDO** and **DISDO** conditions are averaged across three models, which is more feasible because no visualisations are required. In the plots, **Model 1** always refers to the **Base** model. The descision to average the results was made to provide more robustness to the overall analysis and resulting conclusions made in this section. 
 
 For consistency, our calculations of the respective metrics in the figures in this section below are done by comparing each model's output function against every other model and then averaging the metrics per epoch and plotting the resulting metrics values change across training.
 
@@ -257,7 +266,7 @@ def activation_dist_fn(base,compare):
 
 {% endhighlight %}
 
-When we compare the activation distance of neural networks trained in different conditions, it can be observed that neural networks, regardless of **SIDDO** or DISD0 conditions, are dissimilar not only to the base model but to one another. If the activation distance over training remains at or close to 0, one could argue that the models have the same function. However, as we see this activation distance deviate over training, it can be understood that the models move in different functional directions during training. 
+When we compare the activation distance of neural networks trained in different conditions, it can be observed that neural networks, regardless of **SIDDO** or **DISDO** conditions, are dissimilar not only to the base model but to one another. If the activation distance over training remains at or close to 0, one could argue that the models have the same function. However, as we see this activation distance deviate over training, it can be understood that the models move in different functional directions during training. 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.html path="assets/img/2025-05-07-distill-example/same_init_different_order_act.png" class="img-fluid rounded z-depth-1" %}
@@ -270,7 +279,7 @@ When we compare the activation distance of neural networks trained in different 
     Average activation distance of model outputs on the test set of models through training. <b>**SIDDO**</b> is presented on the <b>left</b> and <b>**DISDO**</b> is presented on the <b>right</b>.  <b>Model 1</b> represents the <b>Base</b> model. Higher values indicate increased functional divergence and lower values indicate functional similairty. 
 </div>
 
-Moreover, from the above figure,, simple factors can impact the functional similarity of outputted networks. In this instance, models trained in the **SIDDO** condition are less functionally similar than models **DISDO** condition; this suggests that for models to be more functionally similar, the data order is more important than initialisation being the same. It could be feasible that this is a byproduct of primacy and having similar gradient updates during training. 
+Moreover, from the above figure, simple factors can impact the functional similarity of outputted networks. In this instance, models trained in the **SIDDO** condition are less functionally similar than models **DISDO** condition; this suggests that for models to be more functionally similar, the data order is more important than initialisation being the same. It could be feasible that this is a byproduct of primacy (need to define) and having similar gradient updates during training. 
 
 As a result, it can be understood that even though these models reach similar overall loss and accuracy, the functions they create are fundamentally determined by the data on which they are trained. From the test 3D loss landscapes produced earlier the models with the **SIDDO** condition would be assumed to be more functionally similar as the visualisations suggest similarity, however, it is the case that **DISDO** can have very different loss landscapes but can resemble similar functions when considering activation distance of predictions. 
 
@@ -297,7 +306,7 @@ def cosine_sim_fn(model_1, model_2):
     </div>
 </div>
 <div class="caption">
-    Average Cosine similairty of model outputs on the test set of models through training. <b>**SIDDO**</b> is presented on the <b>left</b> and <b>**DISDO**</b> is presented on the <b>right</b>.  <b>Model 1</b> represents the <b>Base</b> model. Lower values indicate increased functional divergence and higher values indicate functional similairty.  
+    Average Cosine similairty of model outputs on the test set of models through training. <b>SIDDO</b> is presented on the <b>left</b> and <b>DISDO</b> is presented on the <b>right</b>.  <b>Model 1</b> represents the <b>Base</b> model. Lower values indicate increased functional divergence and higher values indicate functional similairty.  
 </div>
 
 Furthermore, there is an agreement between both activation distance and cosine similarity, which states that models within the **DISDO** are more functionally similar than models in the **SIDDO** condition. For **DISDO**, the final consent similarity value is higher than that of **SIDDO**; additionally, for **SIDDO**, the cosine similarity drops lower **(circa 0.75)** than any value for **DISDO**. The agreement across metrics further suggests that the data primacy and similar gradient steps are important and interesting aspects of the functional similarity of models. 
