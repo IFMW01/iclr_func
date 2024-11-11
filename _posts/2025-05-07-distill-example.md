@@ -209,7 +209,7 @@ The neural networks trained in these conditions are similar from the test accura
 
 ## Qualitative Functional Analysis
 
-In this section, we show the analysis conducted by <d-cite key="fort2019deep"></d-cite> using TSNE<d-cite key="van2008visualizing"></d-cite> that show functional dissimilarity of neural networks. We then further this by inclduing other unexplored visualisation methods of PCA, MDS and Spectral Embedding to support the analysis further. We also explore the high-level overview of functional similarity divergence that can be captured at a low fidelity by the Prediction Dissimilarity metric used by Fort et al.,. For both visualisation and prediction dissimilarity, we discuss how these avenues for comparing functions may be misleading and incapable of describing the intricacies of functional divergence.
+In this section, we employ the analysis conducted by <d-cite key="fort2019deep"></d-cite> using TSNE<d-cite key="van2008visualizing"></d-cite> that shows functional dissimilarity of neural networks. We further this by inclduing other unexplored visualisation methods of PCA, MDS and Spectral Embedding to support the analysis further. We also explore functional similarity divergence that can be captured at a low fidelity by the Prediction Dissimilarity metric used by Fort et al.,. For both visualisation and prediction dissimilarity, we discuss how these avenues for comparing functions may be misleading and incapable of describing the intricacies of functional divergence in details but do provide a high-level trends which are important to recognise.
 
 ### Functional Similarity Visualisations
 
@@ -287,7 +287,7 @@ When we compare the activation distance of neural networks trained in different 
     </div>
 </div>
 <div class="caption">
-    Average activation distance of model outputs on the test set of models through training. <b>**SIDDO**</b> is presented on the <b>left</b> and <b>**DISDO**</b> is presented on the <b>right</b>.  <b>Model 1</b> represents the <b>Base</b> model. Higher values indicate increased functional divergence and lower values indicate functional similairty. 
+    Average activation distance of model outputs on the test set of models through training. <b>SIDDO</b> is presented on the <b>left</b> and <b>DISDO</b> is presented on the <b>right</b>.  <b>Model 1</b> represents the <b>Base</b> model. Higher values indicate increased functional divergence and lower values indicate functional similairty. 
 </div>
 
 Moreover, from the above figure,, simple factors can impact the functional similarity of outputted networks. In this instance, models trained in the **SIDDO** condition are less functionally similar than models **DISDO** condition; this suggests that for models to be more functionally similar, the data order is more important than initialisation being the same. It could be feasible that this is a byproduct of <a href="#data_primacy">**The Data Primacy Effect**</a>.
@@ -302,13 +302,14 @@ As a result, it can be understood that even though these models reach similar ov
 
 Cosine Similarity is a metric to measure the cosine angle between two vectors. As a result, model outputs can be vectorised and compared to distinguish how similar their outputs are. For the cosine similarity metric, values that tend towards 1 suggest a more similar functional representation, while values close to zero suggest orthogonal outputs and values of -1 represent polar outputs. This provides a computationally inexpensive mechanism for calculating the functional similarity between model predictions. **The Python code below shows how it can be implemented:**
 
-The figure below for both the **SIDDO** and **DISDO** conditions largely reflects that of the results observed for the activation distance plots. At the start of training, the cosine similarity of the models is high, with a sharp drop off in the initial epochs, followed by a steady decline of cosine similarity during the middle of training, which finishes with a slight increase towards the end of training. The overall trend here is that each of the models have different functions as soon as training begins, and they remain different (albeit with varying values) throughout training. 
-
 {% highlight python %}
 import torch
 def cosine_sim_fn(model_1, model_2):
     return cs(sf(torch.tensor(model_1)), sf(torch.tensor(model_2))).mean()
 {% endhighlight %}
+
+
+The figure below for both the **SIDDO** and **DISDO** conditions largely reflects that of the results observed for the activation distance plots. At the start of training, the cosine similarity of the models is high, with a sharp drop off in the initial epochs, followed by a steady decline of cosine similarity during the middle of training, which finishes with a slight increase towards the end of training. The overall trend here is that each of the models have different functions as soon as training begins, and they remain different (albeit with varying values) throughout training. 
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
@@ -319,7 +320,7 @@ def cosine_sim_fn(model_1, model_2):
     </div>
 </div>
 <div class="caption">
-    Average Cosine similairty of model outputs on the test set of models through training. <b>**SIDDO**</b> is presented on the <b>left</b> and <b>**DISDO**</b> is presented on the <b>right</b>.  <b>Model 1</b> represents the <b>Base</b> model. Lower values indicate increased functional divergence and higher values indicate functional similairty.  
+    Average Cosine similairty of model outputs on the test set of models through training. <b>SIDDO</b> is presented on the <b>left</b> and <b>DISDO</b> is presented on the <b>right</b>.  <b>Model 1</b> represents the <b>Base</b> model. Lower values indicate increased functional divergence and higher values indicate functional similairty.  
 </div>
 
 Furthermore, there is an agreement between both activation distance and cosine similarity, which states that models within the **DISDO** are more functionally similar than models in the **SIDDO** condition. For **DISDO**, the final consent similarity value is higher than that of **SIDDO**; additionally, for **SIDDO**, the cosine similarity drops lower **(circa 0.75)** than any value for **DISDO**. The agreement across metrics further suggests the  <a href="#data_primacy">**The Data Primacy Effect**</a>.
@@ -356,7 +357,7 @@ The figure below for both the **SIDDO** and **DISDO** conditions largely reflect
     </div>
 </div>
 <div class="caption">
-    Average Cosine similairty of model outputs on the test set of models through training. <b>**SIDDO**</b> is presented on the <b>left</b> and <b>**DISDO**</b> is presented on the <b>right</b>.  <b>Model 1</b> represents the <b>Base</b> model. Lower values indicate increased functional divergence and higher values indicate functional similairty.  
+    Average Cosine similairty of model outputs on the test set of models through training. <b>SIDDO</b> is presented on the <b>left</b> and <b>DISDO</b> is presented on the <b>right</b>.  <b>Model 1</b> represents the <b>Base</b> model. Lower values indicate increased functional divergence and higher values indicate functional similairty.  
 </div>
 
 The plots conclude that there is a total agreement between all of the respective quantitative functional similarity measures that models within the **DISDO** are more functionally similar than models in the **SIDDO** condition. Models in **SIDDO** always have the most functional divergence from one another compared to models in the **DISDO** condition. As a result, the results strongly suggest the impacts of  <a href="#data_primacy">**The Data Primacy Effect**</a>.
@@ -369,9 +370,9 @@ A noticeable trend within quantitative functional analysis of models is that the
 
 Qualitative and quantitative functional analysis of the similarity of neural network outputs is something that is gaining popularity in the machine unlearning domain<d-cite key="chundawat2023can"></d-cite> as a way to verify unlearning. Additionally, recent studies have explored how to leverage functional preservation for neural network compression<d-cite key="mason-williams2024neural"></d-cite> and pruning<d-cite key="mason-williams2024what"></d-cite>, with explorations into understanding knowledge transfer through a functional lens<d-cite key="mason-williams2024knowledge"></d-cite>. 
 
-When considering model safety with respect to the <a href="#func_perspective">**Functional Perspective**</a> we argue that models should be analysed and tested independantly given that functional divergence occurs for networks with the same architetcure trained on the same dataset. As a result, there can be more robust stress testing efforts of neural networks which can lead to more precise operational bound identification of neural networks. 
+When considering model safety with respect to the <a href="#func_perspective">**Functional Perspective**</a> we argue that models should be analysed and tested independantly given that functional divergence occurs for networks with the same architetcure trained on the same dataset. As a result, there can be more robust stress testing efforts of neural networks which can lead to more precise operational bound identification. 
 
-Moreover, employing the functional perspective when considering neural networks, combining qualitative and quantitative functional analysis to understand and compare neural networks, will aid endeavours in interpretability and help avoid common misconceptions of the relation between networks, their accuracy and loss as a way to comapre functional simailrity.
+Moreover, employing the  <a href="#func_perspective">**Functional Perspective**</a> when considering neural networks, combining qualitative and quantitative functional analysis to understand and compare neural networks, will aid endeavours in interpretability and help avoid common misconceptions of the relation between networks, their accuracy and loss as a way to comapre functional simailrity.
 
 
 
