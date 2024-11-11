@@ -122,10 +122,10 @@ Neural networks that train on the same data can be considered as functional repr
 For model one the 4 highest prediction probabilities other than the predicted class of cat (0.32) are that of the automobile (0.20), airplane (0.12), ship (0.10) and dog (0.10) - as a result from this output perspective it could be argued that the models function puts this example closer to various vehicles over other animals. On the otherhand for modle two the 4 highest prediction probabilities other than the predicted class of cat (0.32) are that of the dog (0.20), deer (0.12), bird (0.10) and frog (0.10) - this models function puts the input image of a cat closer to other species of animals. 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/pdf/Model_One.pdf" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/pdf/Model_One.jpeg" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/pdf/Model_Two.pdf" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/pdf/Model_Two.jpeg" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
