@@ -277,7 +277,7 @@ def activation_dist_fn(base,compare):
 
 {% endhighlight %}
 
-When we compare the activation distance of neural networks trained in different conditions, it can be observed that neural networks, regardless of **SIDDO** or DISD0 conditions, are dissimilar not only to the base model but to one another. If the activation distance over training remains at or close to 0, one could argue that the models have the same function. However, as we see this activation distance deviate over training, it can be understood that the models move in different functional directions during training. 
+When we compare the activation distance of neural networks trained in different conditions, it can be observed that neural networks, regardless of **SIDDO** or **DISDO** conditions, are dissimilar not only to the base model but to one another. If the activation distance over training remains at or close to 0, one could argue that the models have the same function. However, as we see this activation distance deviate over training, it can be understood that the models move in different functional directions during training. 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.html path="assets/img/2025-05-07-distill-example/same_init_different_order_act.png" class="img-fluid rounded z-depth-1" %}
