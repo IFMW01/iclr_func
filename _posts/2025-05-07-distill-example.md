@@ -1,7 +1,7 @@
 ---
 layout: distill
 title: The Functional Perspective of Neural Networks
-description: Common wisdom suggests that neural networks trained on the same dataset reaching the same accuracy and loss can be considered equivalent. However, when considering neural networks as functional representations of their input space, it becomes clear that neural networks all represent distinct functions that enable the model to have predictive capacity. In this blog post, we review functional perspectives which have been used to understand the success of neural network ensembles on more modern architectures concurrently with a dive deep into existing functional similarity metrics that assess the diversity of neural network functions, showing the pitfalls of just accuracy and loss based perspectives when considering neural network function. 
+description: Common wisdom suggests that neural networks trained on the same dataset reaching the same accuracy and loss can be considered equivalent. However, when considering neural networks as functional representations of their input space, it becomes clear that neural networks represent distinct functions that enable predictive capacity. In this blog post, we review functional perspectives used to understand the success of neural network ensembles on more modern architectures. We concurrently define weak and strong functional similarity analysis that assesses the functional diversity of neural networks with increasing fidelity and elucidates the pitfalls of traditional perspectives when considering neural network function. 
 date: 2025-05-07
 future: true
 htmlwidgets: true
@@ -37,17 +37,17 @@ toc:
       - name: Loss Analysis
       - name: Summary of Traditional Analysis
   
-  - name: Qualitative Functional Analysis
+  - name: Weak Functional Analysis
     subsections:
       - name: Functional Similarity Visualisations
       - name: Prediction Analysis
-      - name: Summary of Qualitative Functional Analysis
-  - name: Quantative Functional Analysis
+      - name: Summary of Weak Functional Analysis
+  - name: Strong Functional Analysis
     subsections:
       - name: Activation Distance
       - name: Cosine Similairty
       - name: JS divergence 
-      - name: Summary of Quantative Functional Analysis
+      - name: Summary of Strong Functional Analysis
   - name: Impact of Functional Network Analysis
 
 _styles: >
@@ -109,7 +109,7 @@ For model one (left image) the 4 highest prediction probabilities other than the
 <div class="caption">
     An example of two hypothetical models trained on CIFAR10 that have equivalent prediction agreement, accuracy and loss on the input space while concurrently having nonequivalent functions.
 </div>
-When considering the functions of the two modles if we were to use them in deployment - despite the accuracy and the loss being equivalent, it would be reasonable to use model two for these types of inputs as it has a function that better captures the distinction between animals and vehicles. This is an important property of  model two as it could suggest that model would be more robust. While this is a contrived exmaple it is not infeasible that such functions could arise in practice which is why model evaluation should be expanded from loss and accuracy to include quantative functional perspectives.
+When considering the functions of the two modles in deployment - despite the accuracy and the loss being equivalent, it would be reasonable to use model two for these types of inputs as it has a function that better captures the distinction between animals and vehicles. This is an important property of  model two as it could suggest that model would be more robust. While this is a contrived exmaple it is not infeasible that such functions could arise in practice which is why model evaluation should be expanded from loss and accuracy to include strong functional analysis perspectives.
 
 
 <!-- To ensure that there are no namespace conflicts, you must save your asset to your unique directory
@@ -182,13 +182,13 @@ When considering the loss landscape visualisation analysis<d-cite key="li2018vis
     <b>Left</b> represents a model with the same initailsation trained on a different data order (<b>SIDD0</b>) , <b>middle</b> is the base model (<b>Base</b>) and <b>right</b> is the model trained with a different initialisation but same data order as the base model (<b>DIDD0</b>). 
 </div>
 
-On this occasion, when we consider the loss landscape 3D visualisation, statements could be made about the similarity of the loss landscapes for the **SIDDO**, Base and **DISDO** models. **SIDDO** and the Base models appear to have similarly structured loss landscapes when compared against the Base and **DISDO** models. While qualitatively, this suggestion appears reasonable, we explain further in the blog post why this illusion of functional similarity does not hold for quantitative measures. 
+On this occasion, when we consider the loss landscape 3D visualisation, statements could be made about the similarity of the loss landscapes for the **SIDDO**, Base and **DISDO** models. **SIDDO** and the Base models appear to have similarly structured loss landscapes when compared against the Base and **DISDO** models. While qualitatively, this suggestion appears reasonable, we explain further in the blog post why this illusion of functional similarity does not hold for strong functional similiarity measures. 
 
 ### Summary of Traditional Analysis
 
 The neural networks trained in these conditions are similar from the test accuracy and loss perspective. Their test accuracy landscape does not deviate massively with perturbation, and despite the loss of landscapes appearing differently on the 3D visualisation, the 2D visualisations resemble one another. Throughout the rest of this blog post, we argue why this perspective alone is not enough to gauge the functional similarity of the models in these conditions and discuss and present alternate avenues for analysis that yield improved insight. 
 
-## Qualitative Functional Analysis
+## Weak Functional Analysis
 
 In this section, we employ the analysis conducted by <d-cite key="fort2019deep"></d-cite> using TSNE<d-cite key="van2008visualizing"></d-cite> that shows functional dissimilarity of neural networks. We further this by inclduing other unexplored visualisation methods of PCA, MDS and Spectral Embedding to support the analysis further. We also explore functional similarity divergence that can be captured at a low fidelity by the Prediction Dissimilarity metric used by Fort et al.,. For both visualisation and prediction dissimilarity, we discuss how these avenues for comparing functions may be misleading and incapable of describing the intricacies of functional divergence in details but do provide a high-level trends which are important to recognise.
 
@@ -222,7 +222,7 @@ However, it is important to note that while there is an agreement in the general
 
 ### Predcition Disagreement Analysis
 
-Prediction disagreement quantifies how frequently two or more neural networks have the same classification on the same input. It provides a proxy for understanding which inputs neural networks diverge on and allows one to reason how these networks represent different functions. While it can be considered a more quanatative metric, we regard it as a weak functional similaity as it only conisders the argmax of model instead of measuring the function space of predictions. The figure in the section <a href="#why_func">**How Neural Network Functions Differ**</a> illustrates how this metric may provide functional similarity illusions as models can agree on the final prediction but have a divergent prediction space that can indicate apparent modelling properties absent in this analysis. We include it within the qualitative section of this analysis as it is only capturing a general trend which aids the understanding of functional divergence but does not provide a genuinely quantitative means for evaluating the functions of each model and how they are different as it is a weak measure. One could imagine a scenario in which prediction disagreement could lead to false conjecture on functional similairty for example two models disagree on the final classifcation of a input item such as one model predicting a cat and the other predicting a dog but you only 0.01 between each class, functionally these models could be very similliar over thre prediction space output but would be considred disimillair from a predition disagreement perspective which could be incorrect.  
+Prediction disagreement quantifies how frequently two or more neural networks have the same classification on the same input. It provides a proxy for understanding which inputs neural networks diverge on and allows one to reason how these networks represent different functions. While it can be considered a more quanatative metric, we regard it as a weak functional similaity as it only conisders the argmax of model instead of measuring the function space of predictions. The figure in the section <a href="#why_func">**How Neural Network Functions Differ**</a> illustrates how this metric may provide functional similarity illusions as models can agree on the final prediction but have a divergent prediction space that can indicate apparent modelling properties absent in this analysis. We include it within the weak functional similarity analysis section as it is only capturing a general trend which aids the understanding of functional divergence but does not provide a means for evaluating the functions of each model and how they are different as it focuses soley on final prediction. One could imagine a scenario in which prediction disagreement could lead to false conjecture on functional similairty for example two models disagree on the final classifcation of a input item such as one model predicting a cat and the other predicting a dog but you only 0.01 between each class, functionally these models could be very similliar over thre prediction space output but would be considred disimillair from a predition disagreement perspective which could be incorrect.  
 
 The figure below depicts how the prediction disagreement changes between the base model and the models in the **SIDDO** and **DISDO** conditions during training. The figure provides an intuitive understanding that each model has different functions, which results in prediction discrepancy, which gets stronger through training. However, despite the pitfalls of this analysis of functional analysis it does reaffirm the notion that accuracy and loss provide a myopic perspective of simialirty that must be explored beyond to understand the properties of individual models.
 
@@ -233,13 +233,13 @@ The figure below depicts how the prediction disagreement changes between the bas
  Prediction Disimilairty of <b>SIDDO</b> compared to <b>Base</b> (<b>Left</b>) and <b>DISDO</b> compared to <b>Base</b> (<b>Right</b>) during training - a higher prediction disimailirty indicates less agreement on prediction.
 </div>
 
-### Summary of Qualitative Functional Analysis
+### Summary of Weak Functional Analysis
 
 
 
-## Quantative Functional Analysis
+## Strong Functional Analysis
 
-In this section of the blog post, we extend the work of Fort et al., to show how quantitative metrics can provide improved insights into the functional similarity of neural networks and how often they tell a disjointed story from that presented by more qualitative lines of analysis. The quantitative metrics selected represent a portion of the available documented functional analysis metrics<d-cite key="klabunde2023similarity"></d-cite>. Akin to the previous section, we use the same architecture, datasets and experimental setups to explore the functional similarity. The only modification is that the **SIDDO** and **DISDO** conditions are averaged across three models, which is more feasible because no visualisations are required. In the plots, **Model 1** always refers to the **Base** model. The descision to average the results was made to provide more robustness to the overall analysis and resulting conclusions made in this section. 
+In this section of the blog post, we extend the work of Fort et al., to show how strong functional similarity can provide improved insights into the functional similarity of neural networks and how often they tell a disjointed story from that presented by traditional lines of analysis. The metrics selected represent a portion of the available documented functional analysis metrics<d-cite key="klabunde2023similarity"></d-cite>. Akin to the previous section, we use the same architecture, datasets and experimental setups to explore the functional similarity. The only modification is that the **SIDDO** and **DISDO** conditions are averaged across three models, which is more feasible because no visualisations are required. In the plots, **Model 1** always refers to the **Base** model. The descision to average the results was made to provide more robustness to the overall analysis and resulting conclusions made in this section. 
 
 For consistency, our calculations of the respective metrics in the figures in this section below are done by comparing each model's output function against every other model and then averaging the metrics per epoch and plotting the resulting metrics values change across training.
 
@@ -352,15 +352,15 @@ The figure below for both the **SIDDO** and **DISDO** conditions largely reflect
     Average Cosine similairty of model outputs on the test set of models through training. <b>SIDDO</b> is presented on the <b>left</b> and <b>DISDO</b> is presented on the <b>right</b>.  <b>Model 1</b> represents the <b>Base</b> model. Lower values indicate increased functional divergence and higher values indicate functional similairty.  
 </div>
 
-The plots conclude that there is a total agreement between all of the respective quantitative functional similarity measures that models within the **DISDO** are more functionally similar than models in the **SIDDO** condition. Models in **SIDDO** always have the most functional divergence from one another compared to models in the **DISDO** condition. As a result, the results strongly suggest the impacts of  <a href="#data_primacy">**The Data Primacy Effect**</a>.
+The plots conclude that there is a total agreement between all of the respective strong functional similarity measures that models within the **DISDO** are more functionally similar than models in the **SIDDO** condition. Models in **SIDDO** always have the most functional divergence from one another compared to models in the **DISDO** condition. As a result, the results strongly suggest the impacts of  <a href="#data_primacy">**The Data Primacy Effect**</a>.
 
-### Summary of Quantative Functional Analysis
+### Summary of Strong Functional Analysis
 
-A noticeable trend within quantitative functional analysis of models is that they clearly depict the functional diversity of neural networks trained on the same dataset. The metrics provide a more detailed insight into the functional distance between models, which is more grounded than qualitative approaches, which are open to more subjective interpretation. Additionally, it is interesting to note that while these metrics measure different qualities of functional similarity, they largely agree with general trends of functional analysis, which shows that they provide a more robust perspective of neural network functional diversity. Moreover, a more transparent understanding of functional diversity can be obtained when combined with visualisations. A point of interest that has arisen from the quantitative results is that models in the **DISDO** condition are more functionally similar than models within **SIDDO**, which shines a light on the functional variation derived from different data orders and the impact of  <a href="#data_primacy">**The Data Primacy Effect**</a> .  
+A noticeable trend within strong functional analysis of models is that they clearly depict the functional diversity of neural networks trained on the same dataset. The metrics provide a more detailed insight into the functional distance between models, which is more grounded than weak functionsl similarity analysis, which are open to more subjective interpretation. Additionally, it is interesting to note that while these metrics measure different qualities of functional similarity, they largely agree with general trends of functional analysis, which shows that they provide a more robust perspective of neural network functional diversity. Moreover, a more transparent understanding of functional diversity can be obtained when combined with visualisations. A point of interest that has arisen from the strong functional analysis results is that models in the **DISDO** condition are more functionally similar than models within **SIDDO**, which shines a light on the functional variation derived from different data orders and the impact of  <a href="#data_primacy">**The Data Primacy Effect**</a> .  
 
 # Impact of Functional Network Analysis
 
-Qualitative and quantitative functional analysis of the similarity of neural network outputs is something that is gaining popularity in the machine unlearning domain<d-cite key="chundawat2023can"></d-cite> as a way to verify unlearning. Additionally, recent studies have explored how to leverage functional preservation for neural network compression<d-cite key="mason-williams2024neural"></d-cite> and pruning<d-cite key="mason-williams2024what"></d-cite>, with explorations into understanding knowledge transfer through a functional lens<d-cite key="mason-williams2024knowledge"></d-cite>. 
+Weak and Strong functional analysis of the similarity of neural network outputs is something that is gaining popularity in the machine unlearning domain<d-cite key="chundawat2023can"></d-cite> as a way to verify unlearning. Additionally, recent studies have explored how to leverage functional preservation for neural network compression<d-cite key="mason-williams2024neural"></d-cite> and pruning<d-cite key="mason-williams2024what"></d-cite>, with explorations into understanding knowledge transfer through a functional lens<d-cite key="mason-williams2024knowledge"></d-cite>. 
 
 When considering model safety with respect to the <a href="#func_perspective">**Functional Perspective**</a> we argue that models should be analysed and tested independantly given that functional divergence occurs for networks with the same architetcure trained on the same dataset. As a result, there can be more robust stress testing efforts of neural networks which can lead to more precise operational bound identification. 
 
