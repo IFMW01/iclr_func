@@ -72,55 +72,35 @@ _styles: >
 
 ##  Why the Functional Perspective
 
-The gensis of regarding neural networks as function machines is owed to the original analysis of ensembling overfit neural networks in the 1990's as a way to reduce the residual generalisation error for two-hidden layer networks performing classification tasks, inspired by notions of fault tolerant computing, wherein a noisy rule is formed by combining many local minima using a collective decision strategy making the resulting output less fallible than any single network<d-cite key="hansen1990neural"></d-cite>; showing how shallow multilayer perceptron (MLP) networks employ different functions to enable improved performance. Fort et al,. popularised this understanding for deep neural networks where they explored the properties of ensembled neural networks via prediction comparisons over just traditional loss and accuracy analysis<d-cite key="fort2019deep"></d-cite>; the work echos the understanding of "noisy" function combination to answer important questions regarding the efficacy of ensembled network performance. 
+The genesis of regarding neural networks as function machines is owed to the original analysis of ensembling overfit neural networks in the 1990s as a way to reduce the residual generalisation error for two-hidden layer networks performing classification tasks, inspired by notions of fault-tolerant computing, wherein a noisy rule is formed by combining many local minima using a collective decision strategy making the resulting output less fallible than any single network<d-cite key="hansen1990neural"></d-cite>; showing how shallow multilayer perceptron (MLP) networks employ different functions to enable improved performance. Fort et al., popularised this understanding for deep neural networks where they explored the properties of ensembled neural networks via prediction comparisons over just traditional loss and accuracy analysis<d-cite key="fort2019deep"></d-cite>; the work echos the understanding of "noisy" function combination to answer important questions regarding the efficacy of ensembled network performance. 
 
-<a name="func_perspective" id="func_perspective">**The Functional Perspective**</a> : We define the Functional Perspective as any research endevour that attempts to exhaustively characterise the divergence and naunce of all network outputs on a layer of interest in a comaprative fashion using a combination of qualitative and/or quantative lines of enquiry. 
+<a name="func_perspective" id="func_perspective">**The Functional Perspective**</a> : We define the Functional Perspective as any research endeavour that attempts to exhaustively characterise the divergence and nuance of all network outputs on a layer of interest in a comparative fashion using a combination of qualitative and/or quantitative lines of enquiry. 
 
-Understanding that neural networks form different functions over their input space is a critial idea that has numerous safety implications. In this blog post we reproduce existing functional analysis conducted by Fort et al., on contemporary vision transformers, providing accuracy, loss, prediction disagreemnt and visual analysis of networks trained on the dataset. We then further the work by introducing the results for the best attempts of contemporary literature to capture function of neural networks<d-cite key="klabunde2023similarity"></d-cite>. We provide a commentary on the pitfalls of traditional analysis of accuracy, loss and visual representations of network functions and outline the importance of culminating such analysis with more quantative methods; closing with a perspective on the wider role functional analysis can have on neural network interpretability and safety in the future. 
-
-<!-- This theme supports rendering beautiful math in inline and display modes using [MathJax 3](https://www.mathjax.org/) engine.
-You just need to surround your math expression with `$$`, like `$$ E = mc^2 $$`.
-If you leave it inside a paragraph, it will produce an inline expression, just like $$ E = mc^2 $$.
-
-To use display mode, again surround your expression with `$$` and place it as a separate paragraph.
-Here is an example:
-
-$$
-\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
-$$
-
-Note that MathJax 3 is [a major re-write of MathJax](https://docs.mathjax.org/en/latest/upgrading/whats-new-3.0.html) 
-that brought a significant improvement to the loading and rendering speed, which is now 
-[on par with KaTeX](http://www.intmath.com/cg5/katex-mathjax-comparison.php). -->
+Understanding that neural networks form different functions over their input space is a critical idea with numerous safety implications. In this blog post, we reproduce existing functional analysis conducted by Fort et al. on contemporary vision transformers, providing accuracy, loss, prediction disagreement and visual analysis of networks trained on the dataset. We then further the work by introducing the results for the best attempts of contemporary literature to capture the function of neural networks<d-cite key="klabunde2023similarity"></d-cite>. We provide a commentary on the pitfalls of traditional analysis of accuracy, loss and visual representations of network functions and outline the importance of culminating such analysis with more quantitative methods, closing with a perspective on the wider role functional analysis can have on neural network interpretability and safety in the future. 
 
 ###  <a name="why_func" id="why_func">How Neural Network Functions Differ</a> 
 
-Neural networks that train on the same data can be considered as functional representation of its input space. As a result models that train on the same data can vary considerably on inputs which leads to different overall behaviour. For example in the figure below we can see two hypothetical models that are trained on the the ten class image classifcation task of CIFAR10 <d-cite key="krizhevsky2009learning"></d-cite>. It is evident that these models will both correctly classifiy the input image as a cat - additionally it can be noted that both models have the same loss value of **1.139**. Considering these two metrics (accuracy and loss) alone could lead to the misconception that these models are functionally equivalent given the absolute similairty of their loss and accuracy. However, when considering the output probailities which represent the function of each model it is evident that the functions are different. 
+Neural networks that train on the same data can be considered functional representations of their input space. As a result, models that train on the same data can vary considerably on inputs, which leads to different overall behaviour. For example, in the figure below, we can see two hypothetical models that are trained on the ten-class image classification task of CIFAR10 <d-cite key="krizhevsky2009learning"></d-cite>. It is evident that these models will correctly classify the input image as a cat - additionally, it can be noted that both models have the same loss value of **1.139**. Considering these two metrics (accuracy and loss) alone could lead to the misconception that these models are functionally equivalent, given the absolute similarity of their loss and accuracy. However, when considering the output probabilities representing each model's function, it is evident that the functions are different. 
 
-For model one (left image) the 4 highest prediction probabilities other than the predicted class of cat (0.32) are that of the automobile (0.20), airplane (0.12), ship (0.10) and dog (0.10) - as a result from this output perspective it could be argued that the models function puts this example closer to various vehicles over other animals. On the otherhand for model two (right image) the 4 highest prediction probabilities other than the predicted class of cat (0.32) are that of the dog (0.20), deer (0.12), bird (0.10) and frog (0.10) - this models function puts the input image of a cat closer to other species of animals. 
+For model one (left image), the four highest prediction probabilities other than the predicted class of cat (0.32) are that of the automobile (0.20), airplane (0.12), ship (0.10) and dog (0.10) - as a result from this output perspective it could be argued that the model's function puts this example closer to various vehicles over other animals. On the other hand, for model two (right image), the four highest prediction probabilities other than the predicted class of cat (0.32) are that of the dog (0.20), deer (0.12), bird (0.10) and frog (0.10). This model's function puts the input image of a cat closer to other species of animals. 
+
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/pdf/Model_One.jpeg" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/pdf/Model_One.jpeg" %}
     </div>
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/pdf/Model_Two.jpeg" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/pdf/Model_Two.jpeg" %}
     </div>
 </div>
 <div class="caption">
     An example of two hypothetical models trained on CIFAR10 that have equivalent prediction agreement, accuracy and loss on the input space while concurrently having nonequivalent functions.
 </div>
-When considering the functions of the two modles in deployment - despite the accuracy and the loss being equivalent, it would be reasonable to use model two for these types of inputs as it has a function that better captures the distinction between animals and vehicles. This is an important property of  model two as it could suggest that model would be more robust. While this is a contrived exmaple it is not infeasible that such functions could arise in practice which is why model evaluation should be expanded from loss and accuracy to include strong functional analysis perspectives.
 
-
-<!-- To ensure that there are no namespace conflicts, you must save your asset to your unique directory
-`/assets/img/2025-05-07-[SUBMISSION NAME]` within your submission.
-
-Please avoid using the direct markdown method of embedding images; they may not be properly resized.
-Some more complex ways to load images (note the different styles of the shapes/shadows): -->
+When considering the functions of the two models in deployment - despite the accuracy and the loss being equivalent, it would be reasonable to use model two for these types of inputs as it has a function that better captures the distinction between animals and vehicles. This function is an essential property of model two as it could suggest the model would be more robust. While this is a contrived example, it is not infeasible that such functions could arise in practice, which is why model evaluation should be expanded from loss and accuracy to include strong functional analysis perspectives.
 
 ## Traditional Functional Analysis
 
-Typically, neural network similarity is considered from an accuracy and loss perspective. In our previous section, we have provided contrived examples of when this approach could be flawed. In this section, we look at more qualitative methods of analysing functional relations of neural networks trained under different conditions on CIFAR10<d-cite key="krizhevsky2009learning"></d-cite> as done by Fort et al,.<d-cite key="fort2019deep"></d-cite> for accuracy and loss. To make the experiments results relevant we use the contemporary architecture of the Vision Transformer<d-cite key="dosovitskiy2020image"></d-cite>. All models have the same training hyperparameters with only two variables (initailisation and training data order) altered. 
+Typically, neural network similarity is considered from an accuracy and loss perspective. In our previous section, we have provided contrived examples of when this approach could be flawed. In this section, we look at more qualitative methods of analysing functional relations of neural networks trained under different conditions on CIFAR10<d-cite key="krizhevsky2009learning"></d-cite> as done by Fort et al., <d-cite key="fort2019deep"></d-cite> for accuracy and loss. To make the experimental results relevant, we use the contemporary architecture of the Vision Transformer<d-cite key="dosovitskiy2020image"></d-cite>. All models have the same training hyperparameters with only two variables (initailisation and training data order) altered. 
 
 The three conditions are as follows:
 
@@ -128,7 +108,7 @@ The three conditions are as follows:
 - **SIDDO**: a model which has the *same initialisation as the base model but is trained on a different data order*.
 - **DISDO**: a model which has a *different initialisation but is trained with the same data order as the base model*.  
 
-Through these three conditions, we show how traditional analysis of accuracy and loss analysis may be misleading. 
+We show how traditional accuracy and loss analysis may be misleading through these three conditions. 
 
 
 ### Test Error Analysis
@@ -198,18 +178,18 @@ For the functional analysis of neural networks Fort et al., employed a TSNE embe
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2025-05-07-distill-example/compare_t-sne_projection_3d.png" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/2025-05-07-distill-example/compare_t-sne_projection_3d.png" %}
     </div>
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2025-05-07-distill-example/compare_pca_projection_3d.png" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/2025-05-07-distill-example/compare_pca_projection_3d.png" %}
     </div>
 </div>
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2025-05-07-distill-example/compare_MDS_projection_3d.png" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/2025-05-07-distill-example/compare_MDS_projection_3d.png" %}
     </div>
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2025-05-07-distill-example/compare_spectral_embedding_projection_3d.png" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/2025-05-07-distill-example/compare_spectral_embedding_projection_3d.png" %}
     </div>
   </div>
 <div class="caption">
@@ -263,10 +243,7 @@ When we compare the activation distance of neural networks trained in different 
 When we compare the activation distance of neural networks trained in different conditions, it can be observed that neural networks, regardless of **SIDDO** or **DISDO** conditions, are dissimilar not only to the base model but to one another. If the activation distance over training remains at or close to 0, one could argue that the models have the same function. However, as we see this activation distance deviate over training, it can be understood that the models move in different functional directions during training. 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2025-05-07-distill-example/same_init_different_order_act.png" class="img-fluid rounded z-depth-1" %}
-    </div>
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2025-05-07-distill-example/different_init_same_order_act.png" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/2025-05-07-distill-example/act_both.png"%}
     </div>
 </div>
 <div class="caption">
@@ -298,10 +275,7 @@ The figure below for both the **SIDDO** and **DISDO** conditions largely reflect
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2025-05-07-distill-example/same_init_different_order_cs.png" class="img-fluid rounded z-depth-1" %}
-    </div>
-        <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2025-05-07-distill-example/different_init_same_order_cs.png" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/2025-05-07-distill-example/cs_both.png"%}
     </div>
 </div>
 <div class="caption">
@@ -342,10 +316,7 @@ The figure below for both the **SIDDO** and **DISDO** conditions largely reflect
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2025-05-07-distill-example/same_init_different_order_js.png" class="img-fluid rounded z-depth-1" %}
-    </div>
-        <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2025-05-07-distill-example/different_init_same_order_js.png" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/2025-05-07-distill-example/js_both.png"%}
     </div>
 </div>
 <div class="caption">
@@ -365,7 +336,3 @@ Weak and Strong functional analysis of the similarity of neural network outputs 
 When considering model safety with respect to the <a href="#func_perspective">**Functional Perspective**</a> we argue that models should be analysed and tested independantly given that functional divergence occurs for networks with the same architetcure trained on the same dataset. As a result, there can be more robust stress testing efforts of neural networks which can lead to more precise operational bound identification. 
 
 Moreover, employing the  <a href="#func_perspective">**Functional Perspective**</a> when considering neural networks, combining qualitative and quantitative functional analysis to understand and compare neural networks, will aid endeavours in interpretability and help avoid common misconceptions of the relation between networks, their accuracy and loss as a way to comapre functional simailrity.
-
-
-
-<!-- [^1]: Same initailisation Differenct Data Order -->
