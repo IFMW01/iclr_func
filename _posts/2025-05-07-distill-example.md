@@ -110,7 +110,6 @@ The three conditions are as follows:
 
 We show how traditional accuracy and loss analysis may be misleading through these three conditions. 
 
-
 ### Test Error Analysis
 
 To evaluate the neural networks in the three different conditions based on the accuracy, we employ a landscape visualisation tool <d-cite key="li2018visualizing"></d-cite>, to present both 2D and 3D representations of the test error landscapes.
