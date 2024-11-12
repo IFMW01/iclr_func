@@ -227,7 +227,9 @@ The weak functional analysis indicates that neural networks have different funct
 
 ## Strong Functional Analysis
 
-In this section of the blog post, we extend the work of Fort et al., to show how strong functional similarity can provide improved insights into the functional similarity of neural networks and how often they tell a disjointed story from that presented by traditional lines of analysis. The metrics selected represent a portion of the available documented functional analysis metrics<d-cite key="klabunde2023similarity"></d-cite>. Akin to the previous section, we use the same architecture, datasets and experimental setups to explore the functional similarity. The only modification is that the **SIDDO** and **DISDO** conditions are averaged across three models, which is more feasible because no visualisations are required. In the plots, **Model 1** always refers to the **Base** model. The descision to average the results was made to provide more robustness to the overall analysis and resulting conclusions made in this section. 
+In this section of the blog post, we extend the work of Fort et al., to show how strong functional similarity can provide improved insights into the functional similarity of neural networks and how often they tell a disjointed story from that presented by traditional lines of analysis. The metrics selected represent a portion of the available documented functional analysis metrics<d-cite key="klabunde2023similarity"></d-cite>.
+
+Akin to the previous section, we use the same architecture, datasets and experimental setups to explore the functional similarity. The only modification is that the **SIDDO** and **DISDO** conditions are averaged across three models, which is more feasible because no visualisations are required. In the plots, **Model 1** always refers to the **Base** model. The descision to average the results was made to provide more robustness to the overall analysis and resulting conclusions made in this section. 
 
 For consistency, our calculations of the respective metrics in the figures in this section below are done by comparing each model's output function against every other model and then averaging the metrics per epoch and plotting the resulting metrics values change across training.
 
@@ -240,31 +242,33 @@ Activation distance <d-cite key="chundawat2023can"></d-cite>, also reported as t
 {% highlight python %}
 
 import torch
-
-def activation_dist_fn(base,compare):
-    distances = torch.sqrt(torch.sum(torch.square(sf(base) - sf(compare)), axis = 1))
+import torch.nn as nn
+def activation_dist_fn(model1,model2,softmaxed=False):
+    softmax = nn.Softmax(dim=1)
+    if not softmaxed:
+        model1 = softmax(model1)    
+        model2 = softmax(model2)
+    distances = torch.sqrt(torch.sum(torch.square(model1 - model2), axis = 1))
     return distances.mean().item()
 
 {% endhighlight %}
 
 When we compare the activation distance of neural networks trained in different conditions, it can be observed that neural networks, regardless of **SIDDO** or **DISDO** conditions, are dissimilar not only to the base model but to one another. If the activation distance over training remains at or close to 0, one could argue that the models have the same function. However, as we see this activation distance deviate over training, it can be understood that the models move in different functional directions during training. 
-When we compare the activation distance of neural networks trained in different conditions, it can be observed that neural networks, regardless of **SIDDO** or **DISDO** conditions, are dissimilar not only to the base model but to one another. If the activation distance over training remains at or close to 0, one could argue that the models have the same function. However, as we see this activation distance deviate over training, it can be understood that the models move in different functional directions during training. 
+
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.html path="assets/img/2025-05-07-distill-example/act_both.png"%}
     </div>
 </div>
 <div class="caption">
-    Average activation distance of model outputs on the test set of models through training. <b>SIDDO</b> is presented on the <b>left</b> and <b>DISDO</b> is presented on the <b>right</b>.  <b>Model 1</b> represents the <b>Base</b> model. Higher values indicate increased functional divergence and lower values indicate functional similairty. 
+    Average activation distance of model outputs on the test set through training. <b>SIDDO</b> is presented on the <b>left</b> and <b>DISDO</b> is presented on the <b>right</b>.  <b>Model 1</b> represents the <b>Base</b> model. Higher values indicate increased functional divergence and lower values indicate functional similairty. 
 </div>
 
-Moreover, from the above figure, simple factors can impact the functional similarity of outputted networks. In this instance, models trained in the **SIDDO** condition are less functionally similar than models **DISDO** condition; this suggests that for models to be more functionally similar, the data order is more important than initialisation being the same. It could be feasible that this is a byproduct of <a href="#data_primacy (need to define)">**The Data Primacy Effect**</a>.
+Moreover, from the above figure, simple factors can impact the functional similarity of the networks. In this instance, models trained in the **SIDDO** condition are less functionally similar than models trained in the **DISDO** condition; this suggests that for models to be more functionally similar, the data order is more important than initialisation being the same. We name this phenomenon <a href="#data_primacy (need to define)">**The Data Primacy Effect**</a>.
 
-<a name="data_primacy" id="data_primacy">**The Data Primacy Effect**</a> : Is a phenomena that acknowledges the importantace of data order for functional similairty, wherein models that take similar gradient updates during training end up in more local minima that have a closer functional representation. 
+<a name="data_primacy" id="data_primacy">**The Data Primacy Effect**</a> : Is a phenomena that acknowledges the importantace of data order for functional similairty, wherein models that take similar updates during training end up in local minima that have a closer functional representation. 
 
-As a result, it can be understood that even though these models reach similar overall loss and accuracy, the functions they create are fundamentally determined by the data on which they are trained. From the test 3D loss landscapes produced earlier the models with the **SIDDO** condition would be assumed to be more functionally similar as the visualisations suggest similarity, however, it is the case that **DISDO** can have very different loss landscapes but can resemble similar functions when considering activation distance of predictions. 
-
-
+As a result, it can be understood that even though these models reach similar overall loss and accuracy, the functions they create are fundamentally determined by the data and order on which they are trained. From the test 3D loss landscapes produced earlier the models with the **SIDDO** condition would be assumed to be more functionally similar as the visualisations suggest similarity, however, it is the case that **DISDO** can have very different loss landscapes but can resemble similar functions when considering activation distance of predictions. 
 
 ### Cosine Similairty
 
@@ -274,8 +278,15 @@ Cosine Similarity is a metric to measure the cosine angle between two vectors. A
 
 {% highlight python %}
 import torch
-def cosine_sim_fn(model_1, model_2):
-    return cs(sf(torch.tensor(model_1)), sf(torch.tensor(model_2))).mean()
+import torch.nn as nn
+
+def cosine_sim_fn(model1, model2,softmaxed=False):
+    cs = torch.nn.CosineSimilarity(dim=1)
+    softmax = nn.Softmax(dim=1):
+    if not softmaxed:
+        model1 = softmax(model1)    
+        model2 = softmax(model2)
+    return cs(model1, model1).mean()
 {% endhighlight %}
 
 
@@ -290,7 +301,7 @@ The figure below for both the **SIDDO** and **DISDO** conditions largely reflect
     Average Cosine similairty of model outputs on the test set of models through training. <b>SIDDO</b> is presented on the <b>left</b> and <b>DISDO</b> is presented on the <b>right</b>.  <b>Model 1</b> represents the <b>Base</b> model. Lower values indicate increased functional divergence and higher values indicate functional similairty.  
 </div>
 
-Furthermore, there is an agreement between both activation distance and cosine similarity, which states that models within the **DISDO** are more functionally similar than models in the **SIDDO** condition. For **DISDO**, the final consent similarity value is higher than that of **SIDDO**; additionally, for **SIDDO**, the cosine similarity drops lower **(circa 0.75)** than any value for **DISDO**. The agreement across metrics further suggests the  <a href="#data_primacy">**The Data Primacy Effect**</a>.
+Furthermore, there is an agreement between activation distance and cosine similarity, which states that models within the **DISDO** are more functionally similar than models in the **SIDDO** condition. For **DISDO**, the final cosine similarity value is higher than that of **SIDDO**; additionally, for **SIDDO**, the cosine similarity drops lower **(circa 0.75)** than any value for **DISDO**. The agreement across metrics further suggests the  <a href="#data_primacy">**The Data Primacy Effect**</a>.
 
 ### JS Divergence
 
@@ -302,25 +313,25 @@ $$\mathrm{KL}(m^{1}(input) \| M) = \sum_{i} m^{1}(input)(i) \log \frac{m^{1}(inp
 
 Jenson-Shanon (JS) Divergence represents a weighted average of KL divergence that can be employed to evaluate between non-continuous distributions  <d-cite key="lin1991divergence"></d-cite> and is leveraged to understand the functional divergence between model outputs. Models with **high functional similarity have values that tend towards 0**, and models that are **less functionally similar have relatively higher values**. However, the distinction is less clear than with other metrics. **The code below details how JS Divergence can be implemented in Python:**
 {% highlight python %}
-
+# Code adapted from https://stackoverflow.com/questions/15880133/jensen-shannon-divergence
 import numpy as np
 import torch.nn as nn
 from numpy.linalg import norm
 from scipy.stats import entropy
 
-
-def JSD(P, Q):
-    P = nn.Softmax(dim=1)(P)
-    Q = nn.Softmax(dim=1)(Q)
-    _P = P / norm(P, ord=1)
-    _Q = Q / norm(Q, ord=1)
-    _M = 0.5 * (_P + _Q)
-    return (0.5 * (entropy(_P, _M) + entropy(_Q, _M))).mean()
-# Code from https://stackoverflow.com/questions/15880133/jensen-shannon-divergence
+def JSD(model1, model2, softmaxed=False):
+    softmax = nn.Softmax(dim=1):
+    if not softmaxed:
+        model1 = softmax(model1)    
+        model2 = softmax(model2)
+    _model1 = model1 / norm(model1, ord=1)
+    _model2 = model2 / norm(model2, ord=1)
+    _M = 0.5 * (_model1 + _model2)
+    return (0.5 * (entropy(_model1, _M) + entropy(_model2, _M))).mean()
 
 {% endhighlight %}
 
-The figure below for both the **SIDDO** and **DISDO** conditions largely reflects that of the results observed for both activation distance and cosine similarity plots. At the start of training, the JS divergence of the models is essentially zero, with a sharp increase in the initial epochs, followed by a steady increase in the middle of training and a slight decrease towards the end of training. The noticeable trend is that each of the models has different functions as soon as training begins, and they remain different throughout training; again there is consistency between the functional distance of all the models in the respective conditions, which strengthen the notion that different functions form through training for different models.
+The figure below for the **SIDDO** and **DISDO** conditions largely reflects the results observed for both the activation distance and cosine similarity plots. At the start of training, the JS divergence of the models is essentially zero, with a sharp increase in the initial epochs, followed by a steady increase in the middle of training and a slight decrease towards the end of training. The noticeable trend is that each of the models has different functions as soon as training begins, and they remain different throughout training; again, there is consistency between the functional distance of all the models in the respective conditions, which strengthens the notion that different functions form through training for different models.
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
@@ -335,7 +346,7 @@ The plots conclude that there is a total agreement between all of the respective
 
 ### Summary of Strong Functional Analysis
 
-A noticeable trend within strong functional analysis of models is that they clearly depict the functional diversity of neural networks trained on the same dataset. The metrics provide a more detailed insight into the functional distance between models, which is more grounded than weak functionsl similarity analysis, which are open to more subjective interpretation. Additionally, it is interesting to note that while these metrics measure different qualities of functional similarity, they largely agree with general trends of functional analysis, which shows that they provide a more robust perspective of neural network functional diversity. Moreover, a more transparent understanding of functional diversity can be obtained when combined with visualisations. A point of interest that has arisen from the strong functional analysis results is that models in the **DISDO** condition are more functionally similar than models within **SIDDO**, which shines a light on the functional variation derived from different data orders and the impact of  <a href="#data_primacy">**The Data Primacy Effect**</a> .  
+A noticeable trend within the strong functional analysis of models is that they clearly depict the functional diversity of neural networks trained on the same dataset. The metrics provide a more detailed insight into the functional distance between models, which is more grounded than weak functional similarity analysis, which is open to more subjective interpretation. Additionally, while these metrics measure different qualities of functional similarity, they largely agree with general trends of weak functional analysis, which shows that they provide a more robust perspective of neural network functional diversity. Moreover, a more transparent understanding of functional diversity can be obtained when combined with visualisations. A point of interest that has arisen from the strong functional analysis results is that models in the **DISDO** condition are more functionally similar than models within **SIDDO**, which shines a light on the functional variation derived from different data orders and the impact of  <a href="#data_primacy">**The Data Primacy Effect**</a>.  
 
 # Impact of Functional Network Analysis
 
