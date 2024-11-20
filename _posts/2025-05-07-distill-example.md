@@ -31,6 +31,7 @@ toc:
   - name: Why the Functional Perspective
     subsections:
     - name: How Can Functions Differ
+  - name: Experimental Setup
   - name: Traditional Network Analysis
     subsections:
       - name: Test Error Analysis
@@ -72,17 +73,15 @@ _styles: >
 
 ##  Why the Functional Perspective
 
-The genesis of regarding neural networks as function machines is owed to the original analysis of ensembling overfit neural networks in the 1990s as a way to reduce the residual generalisation error for two-hidden layer networks performing classification tasks, inspired by notions of fault-tolerant computing, wherein a noisy rule is formed by combining many local minima using a collective decision strategy making the resulting output less fallible than any single network<d-cite key="hansen1990neural"></d-cite>; showing how shallow multilayer perceptron (MLP) networks employ different functions to enable improved performance. Fort et al., popularised this understanding for deep neural networks where they explored the properties of ensembled neural networks via prediction comparisons over just traditional loss and accuracy analysis<d-cite key="fort2019deep"></d-cite>; the work echos the understanding of "noisy" function combination to answer important questions regarding the efficacy of ensembled network performance. 
+The genesis of regarding neural networks as function machines is owed to the original analysis of ensembling overfit neural networks in the 1990s as a way to reduce the generalisation gap for two-hidden layer networks performing classification tasks<d-cite key="hansen1990neural"></d-cite>. Ensembling, inspired by fault-tolerant computing, is the act of combining many "noisy" **shallow** network outputs to form one output that is less falible than any single network. Fort et al., popularised this understanding for **deep** neural networks where they explored the properties of ensembled neural networks via prediction comparisons over just traditional loss and accuracy analysis<d-cite key="fort2019deep"></d-cite>; the work echos the understanding of the "noisy" function combination and showed the same effect in deep neural networks that models form different functions when trained on the same data.
 
 <a name="func_perspective" id="func_perspective">**The Functional Perspective**</a> : We define the Functional Perspective as any research endeavour that attempts to exhaustively characterise the divergence and nuance of all network outputs on a layer of interest in a comparative fashion using a combination of qualitative and/or quantitative lines of enquiry. 
 
-Understanding that neural networks form different functions over their input space is a critical idea with numerous safety implications. In this blog post, we reproduce existing functional analysis conducted by Fort et al. on contemporary vision transformers, providing accuracy, loss, prediction disagreement and visual analysis of networks trained on the dataset. We then further the work by introducing the results for the best attempts of contemporary literature to capture the function of neural networks<d-cite key="klabunde2023similarity"></d-cite>. We provide a commentary on the pitfalls of traditional analysis of accuracy, loss and visual representations of network functions and outline the importance of culminating such analysis with more quantitative methods, closing with a perspective on the wider role functional analysis can have on neural network interpretability and safety in the future. 
+Understanding that neural networks form different functions over their input space is a critical idea with numerous safety implications. In this blog post, we reproduce existing functional analysis conducted by Fort et al. on contemporary vision transformers, providing accuracy, loss, prediction disagreement and visual analysis of networks trained on the dataset. We then further the work by introducing the results for the best attempts of contemporary literature to capture the functional divergence of neural networks<d-cite key="klabunde2023similarity"></d-cite>. We provide a commentary on the pitfalls of traditional analysis of accuracy, loss and visual representations of network functions and outline the importance of culminating such analysis with more quantitative methods, closing with a perspective on the wider role functional analysis can have on neural network interpretability and safety. 
 
 ###  <a name="why_func" id="why_func">How Neural Network Functions Differ</a> 
 
-Neural networks that train on the same data can be considered functional representations of their input space. As a result, models that train on the same data can vary considerably on inputs, which leads to different overall behaviour. For example, in the figure below, we can see two hypothetical models that are trained on the ten-class image classification task of CIFAR10 <d-cite key="krizhevsky2009learning"></d-cite>. It is evident that these models will correctly classify the input image as a cat - additionally, it can be noted that both models have the same loss value of **1.139**. Considering these two metrics (accuracy and loss) alone could lead to the misconception that these models are functionally equivalent, given the absolute similarity of their loss and accuracy. However, when considering the output probabilities representing each model's function, it is evident that the functions are different. 
-
-For model one (left image), the four highest prediction probabilities other than the predicted class of cat (0.32) are that of the automobile (0.20), airplane (0.12), ship (0.10) and dog (0.10) - as a result from this output perspective it could be argued that the model's function puts this example closer to various vehicles over other animals. On the other hand, for model two (right image), the four highest prediction probabilities other than the predicted class of cat (0.32) are that of the dog (0.20), deer (0.12), bird (0.10) and frog (0.10). This model's function puts the input image of a cat closer to other species of animals. 
+Trained neural netorks can be considered functional representations of their input space. As a result, models that train on the same data can vary considerably on inputs, which leads to different overall behaviour. For example, in the figure below, we present two hypothetical models that are trained on the ten-class image classification task of CIFAR10 <d-cite key="krizhevsky2009learning"></d-cite>. 
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
@@ -96,11 +95,17 @@ For model one (left image), the four highest prediction probabilities other than
     An example of two hypothetical models trained on CIFAR10 that have equivalent prediction agreement, accuracy and loss on the input space while concurrently having nonequivalent functions.
 </div>
 
+It is evident that these models will correctly classify the input image as a cat - additionally, it can be noted that both models have the same loss of **1.139**. Considering these two metrics (accuracy and loss) alone could lead to the misconception that these models are functionally equivalent, given the absolute similarity of their loss and accuracy. However, when considering the output probabilities representing each model's function, it is evident that the functions are different. 
+
+For model one (left image), the four highest prediction probabilities other than the predicted class of cat (0.32) are that of the automobile (0.20), airplane (0.12), ship (0.10) and dog (0.10) - as a result from this output perspective it could be argued that the model's function puts this example closer to various vehicles over other animals. On the other hand, for model two (right image), the four highest prediction probabilities other than the predicted class of cat (0.32) are that of the dog (0.20), deer (0.12), bird (0.10) and frog (0.10). This model's function puts the input image of a cat closer to other species of animals. 
+
+
+
 When considering the functions of the two models in deployment - despite the accuracy and the loss being equivalent, it would be reasonable to use model two for these types of inputs as it has a function that better captures the distinction between animals and vehicles. This function is an essential property of model two as it could suggest the model would be more robust. While this is a contrived example, it is not infeasible that such functions could arise in practice, which is why model evaluation should be expanded from loss and accuracy to include strong functional analysis perspectives.
 
-## Traditional Functional Analysis
+# Experimental Setup
 
-Typically, neural network similarity is considered from an accuracy and loss perspective. In our previous section, we have provided contrived examples of when this approach could be flawed. In this section, we look at more qualitative methods of analysing functional relations of neural networks trained under different conditions on CIFAR10<d-cite key="krizhevsky2009learning"></d-cite> as done by Fort et al., <d-cite key="fort2019deep"></d-cite> for accuracy and loss. To make the experimental results relevant, we use the contemporary architecture of the Vision Transformer<d-cite key="dosovitskiy2020image"></d-cite>. All models have the same training hyperparameters with only two variables (initailisation and training data order) altered. 
+Typically, neural network similarity is considered from an accuracy and loss perspective. In the previous section, we have provided contrived examples of when this approach could be flawed. In this section, we look at using accuracy and loss to compare functional relations of neural networks trained under different conditions on CIFAR10<d-cite key="krizhevsky2009learning"></d-cite>. To make the experimental results relevant, we use the contemporary architecture of the Vision Transformer<d-cite key="dosovitskiy2020image"></d-cite>. All models have the same training hyperparameters with only two variables (initailisation and training data order) altered. 
 
 The three conditions are as follows:
 
@@ -108,13 +113,17 @@ The three conditions are as follows:
 - **SIDDO**: a model which has the *same initialisation as the base model but is trained on a different data order*.
 - **DISDO**: a model which has a *different initialisation but is trained with the same data order as the base model*.  
 
-We show how traditional accuracy and loss analysis may be misleading through these three conditions. 
+
+
+## Traditional Functional Analysis
+
+The following subsections show how traditional accuracy and loss analysis may be misleading to compare function similairty through these three conditions. 
 
 ### Test Error Analysis
 
 To evaluate the neural networks in the three different conditions based on the accuracy, we employ a landscape visualisation tool <d-cite key="li2018visualizing"></d-cite>, to present both 2D and 3D representations of the test error landscapes.
 
-For the 2D and 3D test error plots below, at the minima, where X and Y coordinates are **(0,0)**, it can be observed that the **SIDDO**, Base and **DISDO** models have very similar test errors of **26.870**, **27.020** and **27.240**, respectively. Additionally, from both perspectives, it is hard to tell if the models are different, given the similarity between their 2D and 3D visualisations. 
+For the 2D and 3D test error plots below, at the minima, where X and Y coordinates are **(0,0)**, it can be observed that the **SIDDO**, **Base** and **DISDO** models have very similar test errors of **26.870**, **27.020** and **27.240**, respectively. Additionally, from both perspectives, it is hard to tell if the models are different, given the similarity between their 2D and 3D visualisations. 
 
 Interact with the figures below and try to gain an understanding of the plots to get an intuitive gauge of the error spaces. 
 
@@ -144,7 +153,7 @@ Comparing the Euclidean distance between **SIDDO** and the **Base** models, we o
 
 ### Loss Analysis
 
-When considering the loss landscape visualisation analysis<d-cite key="li2018visualizing"></d-cite> in the 2D and 3D figures below, we are confronted with similar issues. The 2D and 3D test loss plots below, at the minima, where X and Y coordinates are **(0,0)**, for **SIDDO**, Base and **DISDO** are **1.993**, **1.948** and **1.932**, respectively. Again, these values are not too dissimilar, and the 2D plots, in particular, suggest the same trend for their loss regions. 
+When considering the loss landscape visualisation analysis<d-cite key="li2018visualizing"></d-cite> in the 2D and 3D figures below, we are confronted with a simlair perspective. For the 2D and 3D test loss plots below, at the minima, where X and Y coordinates are **(0,0)**, for **SIDDO**, **Base** and **DISDO** the losses are **1.993**, **1.948** and **1.932**, respectively. Again, these values are not too dissimilar, and the 2D plots, in particular, suggest the same trend for their loss regions. 
 
 Once again, we invite the reader to play with the 2D and 3D visualisations of the loss landscapes to get an intuitive feel for what the figures are conveying. 
 
@@ -152,7 +161,7 @@ Once again, we invite the reader to play with the 2D and 3D visualisations of th
   <iframe src="{{ 'assets/html/2025-05-07-distill-example/test_loss_landscapes.html' | relative_url }}" frameborder='0' scrolling='no' height="600px" width="100%"></iframe>
 </div>
 <div class="caption">
-    <b>Two dimensional</b>loss landscape plots around the local minima by perturbing the parameters along two random approximately orthogonal filter-wise normalised directions in weight space X and Y<d-cite key="li2018visualizing"></d-cite>.
+    <b>Two dimensional</b> loss landscape plots around the local minima by perturbing the parameters along two random approximately orthogonal filter-wise normalised directions in weight space X and Y<d-cite key="li2018visualizing"></d-cite>.
     <br>
     <b>Left</b> represents a model with the same initailsation trained on a different data order (<b>SIDDO</b>) , <b>middle</b> is the base model (<b>Base</b>) and <b>right</b> is the model trained with a different initialisation but same data order as the base model (<b>DIDDO</b>). 
 </div>
@@ -171,11 +180,11 @@ Comparing the Euclidean distance between **SIDDO** and the **Base** models, we o
 
 ### Summary of Traditional Analysis
 
-The neural networks trained in these conditions are similar from the test accuracy and loss perspective. Their test accuracy landscape does not deviate massively with perturbation, and despite the loss of landscapes appearing differently on the 3D visualisation, the 2D visualisations resemble one another. Throughout the rest of this blog post, we argue why this perspective alone is not enough to gauge the functional similarity of the models in these conditions and discuss and present alternate avenues for analysis that yield improved insight. 
+The neural networks trained in these conditions are similar from the test accuracy and loss perspective. Their test accuracy landscape does not deviate massively with perturbation, and despite the loss landscapes appearing differently on the 3D visualisation, the 2D visualisations resemble one another. Throughout the rest of this blog post, we argue why this perspective alone is not enough to gauge the functional similarity of the models in these conditions and discuss and present alternate avenues for analysis that yield improved insight. 
 
 ## Weak Functional Analysis
 
-In this section, we employ the analysis conducted by <d-cite key="fort2019deep"></d-cite> using TSNE<d-cite key="van2008visualizing"></d-cite> that shows functional dissimilarity of neural networks. We further this by inclduing other unexplored visualisation methods of PCA<d-cite key="pearson1901liii"></d-cite>, MDS<d-cite key="mead1992review"></d-cite> and Spectral Embedding<d-cite key="10.5555/2980539.2980616"></d-cite> to support the analysis further. We also explore functional similarity divergence that can be captured at a low fidelity by the Prediction Dissimilarity metric used by Fort et al.,. For both visualisation and prediction dissimilarity, we discuss how these avenues for comparing functions may be misleading and incapable of describing the intricacies of functional divergence in details but do provide a high-level trends which are important to recognise.
+In this section, we employ the analysis conducted by Fort et al.,<d-cite key="fort2019deep"></d-cite> using TSNE<d-cite key="van2008visualizing"></d-cite> that shows functional dissimilarity of neural networks. We further this by inclduing other unexplored visualisation methods of PCA<d-cite key="pearson1901liii"></d-cite>, MDS<d-cite key="mead1992review"></d-cite> and Spectral Embedding<d-cite key="10.5555/2980539.2980616"></d-cite> to support the analysis further. We also explore functional similarity divergence that can be captured at a low fidelity by the Prediction Dissimilarity metric used by Fort et al.,. For both visualisation and prediction dissimilarity, we discuss how these avenues for comparing functions may be misleading and incapable of describing the intricacies of functional divergence but do provide a high-level trends which are important to recognise.
 
 ### Functional Similarity Visualisations
 
@@ -190,19 +199,19 @@ For the functional analysis of neural networks Fort et al., employed a TSNE embe
     Qualitative visualisations of the <b>SIDDO</b>, <b>Base</b> and <b>DISDO</b> functions over training. <b>Top-Left</b> TSNE, <b>Top-Right</b> Pinciple Component Analysis , <b>Bottom-Left</b> Spectral Embedding and <b>Bottom-Right</b> Multiple Dimensional Scaling. 
 </div>
 
-However, it is important to note that while there is an agreement in the general trend of functional divergence, each of the visualisation strategies shows different training paths - the nuances in each method's functional pathways between **SIDDO**, Base, and **DISDO** could lead to different conclusions which may be an artefact of the specific method. As a result, to have the most informative view when using such qualitative methods, it is essential to use a range of embeddings to confirm overall trends without reading too much into the functional illusions that stem from a particular method. Moreover, it is challenging to make statements on the specific functional proximities of different training conditions on functional similarity via functional visualisation as each of the final functional locations is hard to compare qualitatively and can only be commeteted on subjectively. 
+However, it is important to note that while there is an agreement in the general trend of functional divergence, each of the visualisation strategies shows different training paths - the nuances in each method's functional pathways between **SIDDO**, **Base**, and **DISDO** could lead to different conclusions which may be an artefact of the specific method. As a result, to have the most informative view when using such qualitative methods, it is essential to use a range of embeddings to confirm overall trends without reading too much into the functional illusions that stem from a particular method. Moreover, it is challenging to make statements on the specific functional proximities of different training conditions on functional similarity via functional visualisation as each of the final functional locations is hard to compare qualitatively and can only be commeteted on subjectively. 
 
 
 
 ### Predcition Disagreement Analysis
 
-Prediction disagreement quantifies how frequently two or more neural networks have the same classification on the same input. It provides a proxy for understanding which inputs neural networks diverge on and allows one to reason how these networks represent different functions. While it can be considered a more quanatative metric, we regard it as a weak functional similaity as it only conisders the argmax of model instead of measuring the function space of predictions. 
+Prediction disagreement quantifies how frequently two or more neural networks have the same classification on the same input. It provides a proxy for understanding which inputs neural networks diverge on and allows one to reason how these networks represent different functions. While it can be considered a more quanatative metric, we regard it as a weak functional similairty measure as it only conisders the **argmax** of model outputs instead of measuring the function space of predictions. 
 
-The figure in the section <a href="#why_func">**How Neural Network Functions Differ**</a> illustrates how this metric may provide functional similarity illusions as models can agree on the final prediction but have a divergent prediction space that can indicate apparent modelling properties absent in this analysis. We include it within the weak functional similarity analysis section as it only captures a general trend, which aids the understanding of functional divergence but does not provide a means for evaluating the functions of each model and how they are different as it focuses solely on the final prediction. 
+The figure in the section <a href="#why_func">**How Neural Network Functions Differ**</a> illustrates how this metric may provide functional similarity illusions as models can agree on the final prediction but have a divergent prediction space that can indicate apparent modelling properties absent in this analysis. We include it within the weak functional similarity analysis section as it only captures a general trend, which aids the understanding of functional divergence but does not provide a means for evaluating the functions of each model and how they are different as it focuses solely on the **argmax prediction**. 
 
 One could imagine a scenario in which prediction disagreement could lead to false conjecture on functional similarity. For example, two models disagree on the final classification of an input item, such as one model predicting a cat and the other predicting a dog. Yet, if there is only a small difference between each class, these models could be very similar in their prediction output space and, thus, function. However, they are dissimilar from a prediction disagreement perspective, which could be incorrect when considering the overall function space.   
 
-The figure below depicts how the prediction disagreement changes between the **Base** model and the models in the **SIDDO** and **DISDO** conditions during training. The figure provides an intuitive understanding that each model has different functions, which results in prediction discrepancy, which gets stronger through training. However, despite the pitfalls of this analysis of functional analysis, it does reaffirm the notion that accuracy and loss provide a myopic perspective of similarity that must be explored beyond to understand the properties of individual models.
+The figure below depicts how the prediction disagreement changes between the **Base** model and the models in the **SIDDO** and **DISDO** conditions during training. The figure provides an intuitive understanding that each model has different functions, which results in prediction discrepancy, which gets stronger through training. However, despite the pitfalls of this functional analysis method, it does reaffirm the notion that accuracy and loss provide a myopic perspective of similarity that must be explored beyond to understand the properties of individual models.
 
 <div class="l-page">
   <iframe src="{{ 'assets/html/2025-05-07-distill-example/predictions.html' | relative_url }}" frameborder='0' scrolling='no' height="600px" width="100%"></iframe>
@@ -211,7 +220,7 @@ The figure below depicts how the prediction disagreement changes between the **B
  Prediction Disimilairty of <b>SIDDO</b> compared to the <b>Base</b> (<b>Left</b>) <b>Base</b> compared to the <b>Base</b> (<b>Middle</b>) and <b>DISDO</b> compared to the <b>Base</b> (<b>Right</b>) during training - a higher prediction disimailirty indicates less agreement on prediction.
 </div>
 
-The Prediction Disimilairty of **SIDDO** compared to **Base** shows that early on in training, the models very quickly diverge from predicting the same outputs, with the initialisation having a prediction disagreement of **0** and epoch one (coordinate (1,1)) resulting in a prediction disagreement of **0.355**, although this does reduce by the end of training (coordinate (200,200)) to **0.263**. 
+The Prediction Disimilairty of **SIDDO** compared to **Base** shows that early on in training, the models very quickly diverge from predicting the same outputs, with the mdoels starting with a prediction disagreement of **0**. After one epoch (coordinate (1,1)) **SIDDO** and the **Base** have a prediction disagreement of **0.355**, although this does reduce by the end of training (coordinate (200,200)) to **0.263**. 
 
 The Prediction Disimilairty of the **Base** compared to **Base** shows that early in training, there is a lot of change in the prediction outputs from epoch to epoch; however, this decreases through training, with coordinate (0,1),  coordinate (99,100) and coordinate (199,200) resulting in a prediction disagreement of **0.944**, **0.142** and **0.019**, respectively. The diagonal throughout is **0.0** due to being the same model. 
 
@@ -226,17 +235,17 @@ The weak functional analysis indicates that neural networks have different funct
 
 ## Strong Functional Analysis
 
-In this section of the blog post, we extend the work of Fort et al., to show how strong functional similarity can provide improved insights into the functional similarity of neural networks and how often they tell a disjointed story from that presented by traditional lines of analysis. The metrics selected represent a portion of the available documented functional analysis metrics<d-cite key="klabunde2023similarity"></d-cite>.
+In this section, we extend the work of Fort et al., to show how strong functional similarity can provide improved insights into the functional similarity of neural networks and how often they tell a disjointed story from that presented by traditional lines of analysis. The metrics selected represent a portion of the available documented functional analysis metrics<d-cite key="klabunde2023similarity"></d-cite>.
 
 Akin to the previous section, we use the same architecture, datasets and experimental setups to explore the functional similarity. The only modification is that the **SIDDO** and **DISDO** conditions are averaged across three models, which is more feasible because no visualisations are required. In the plots, **Model 1** always refers to the **Base** model. The descision to average the results was made to provide more robustness to the overall analysis and resulting conclusions made in this section. 
 
-For consistency, our calculations of the respective metrics in the figures in this section below are done by comparing each model's output function against every other model and then averaging the metrics per epoch and plotting the resulting metrics values change across training.
+For consistency, our calculations of the respective metrics in the figures in this section below are done by comparing each model's output function against every other model and then averaging the metrics per epoch and plotting the values across training.
 
 ### Activation Distance
 
 $$\|\mathbf{m^{1}(input)} - \mathbf{m^{2}(input)}\|_2 = \sqrt{(m_{1}^{1} - m_{1}^{2})^2 + (m_{2}^{1} - m_{2}^{2})^2 +...+ (m_{n}^{1} - m_{n}^{2})}$$
 
-Activation distance <d-cite key="chundawat2023can"></d-cite>, also reported as the norm of prediction difference<d-cite key="klabunde2023similarity"></d-cite>,  represents the *l2* distance of neural network outputs - from this distance, the predictive distance between neural networks can be better understood quantitatively. A **lower activation distance** closer to 0 indicates less functional deviation between model outputs, while a **higher activation distance** suggests functional divergence. It can be calculated by taking the outputs of two models and averaging the *l2* distance of outputs across input batches, **as shown in the Python code below:**
+Activation distance <d-cite key="chundawat2023can"></d-cite>, also reported as the norm of prediction difference<d-cite key="klabunde2023similarity"></d-cite>,  represents the *l2* distance of neural network outputs - from this distance, the predictive similarity between neural networks can be better understood quantitatively. A **lower activation distance** closer to 0 indicates less functional deviation between model outputs, while a **higher activation distance** suggests functional divergence. It can be calculated by taking the outputs of two models and averaging the *l2* distance of outputs across input batches, **as shown in the Python code below:**
 
 {% highlight python %}
 
@@ -252,7 +261,7 @@ def activation_dist_fn(model1,model2,softmaxed=False):
 
 {% endhighlight %}
 
-When we compare the activation distance of neural networks trained in different conditions, it can be observed that neural networks, regardless of **SIDDO** or **DISDO** conditions, are dissimilar not only to the base model but to one another. If the activation distance over training remains at or close to 0, one could argue that the models have the same function. However, as we see this activation distance deviate over training, it can be understood that the models move in different functional directions during training. 
+When we compare the activation distance of neural networks trained in different conditions, it can be observed that neural networks, regardless of **SIDDO** or **DISDO** conditions, are dissimilar not only to the **Base** model but to one another. If the activation distance over training remains at or close to 0, one could argue that the models have the same function. However, as we see this activation distance deviate over training, it can be understood that the models move in different functional directions during training. 
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
@@ -302,7 +311,7 @@ The figure below for both the **SIDDO** and **DISDO** conditions largely reflect
 
 Furthermore, there is an agreement between activation distance and cosine similarity, which states that models within the **DISDO** are more functionally similar than models in the **SIDDO** condition. For **DISDO**, the final cosine similarity value is higher than that of **SIDDO**; additionally, for **SIDDO**, the cosine similarity drops lower **(circa 0.75)** than any value for **DISDO**. The agreement across metrics further suggests the  <a href="#data_primacy">**The Data Primacy Effect**</a>.
 
-### JS Divergence
+### Jensen Shanon Divergence
 
 $$\mathrm{JS}(m^{1} \| m^{2}) = \frac{1}{2} \mathrm{KL}(m^{1}(input) \| M) + \frac{1}{2} \mathrm{KL}(m^{2}(input) \| M)$$
 
@@ -310,7 +319,7 @@ $$M = \frac{1}{2}(m^{1}(input) + m^{2}(input)$$
 
 $$\mathrm{KL}(m^{1}(input) \| M) = \sum_{i} m^{1}(input)(i) \log \frac{m^{1}(input)(i)}{M(i)}$$
 
-Jenson-Shanon (JS) Divergence represents a weighted average of KL divergence that can be employed to evaluate between non-continuous distributions  <d-cite key="lin1991divergence"></d-cite> and is leveraged to understand the functional divergence between model outputs. Models with **high functional similarity have values that tend towards 0**, and models that are **less functionally similar have relatively higher values**. However, the distinction is less clear than with other metrics. **The code below details how JS Divergence can be implemented in Python:**
+Jenson-Shanon (JS) Divergence represents a weighted average of KL divergence that can be employed to evaluate two non-continuous distributions  <d-cite key="lin1991divergence"></d-cite> and is leveraged to understand the functional divergence between model outputs. Models with **high functional similarity have values that tend towards 0**, and models that are **less functionally similar have relatively higher values**. However, the distinction is less clear than with other metrics. **The code below details how JS Divergence can be implemented in Python:**
 {% highlight python %}
 # Code adapted from https://stackoverflow.com/questions/15880133/jensen-shannon-divergence
 import numpy as np
@@ -353,4 +362,4 @@ Weak and Strong functional analysis of the similarity of neural network outputs 
 
 When considering model safety with respect to the <a href="#func_perspective">**Functional Perspective**</a> we argue that models should be analysed and tested independantly given that functional divergence occurs for networks with the same architetcure trained on the same dataset. As a result, there can be more robust stress testing efforts of neural networks which can lead to more precise operational bound identification. 
 
-Moreover, employing the  <a href="#func_perspective">**Functional Perspective**</a> when considering neural networks, combining qualitative and quantitative functional analysis to understand and compare neural networks, will aid endeavours in interpretability and help avoid common misconceptions of the relation between networks, their accuracy and loss as a way to comapre functional simailrity.
+Moreover, employing the  <a href="#func_perspective">**Functional Perspective**</a>  will aid endeavours in interpretability and help avoid common misconceptions of the relation between networks, their accuracy and loss as a way to comapre functional simailrity.
